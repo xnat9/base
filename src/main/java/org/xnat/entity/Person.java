@@ -2,6 +2,7 @@ package org.xnat.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.xnat.dao.annotation.Entity;
 
@@ -10,6 +11,7 @@ import org.xnat.dao.annotation.Entity;
  * @author xnat
  * Oct 21, 2014 10:45:38 AM
  */
+@Table(name="person")
 @Entity(tableName=Person.tabName)
 //@Table(name="person", catalog="d1") // name=表名, catalog=数据库名 use entity
 public class Person extends BaseEntity {

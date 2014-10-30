@@ -309,11 +309,19 @@ public final class DataUtils {
 	 * @param value
 	 * Oct 29, 2014 10:04:12 AM
 	 */
-	public static void bean_setValueForField(Object obj, String fieldName, Object value) {
+	public static void bean_setValueForField(Object obj, String fieldName, String value) {
 		try {
 			Field field = obj.getClass().getDeclaredField(fieldName);
 			field.setAccessible(true);
-			if (fieldName.equals(field.getName())) field.set(obj, value);
+			String type = field.getType().getSimpleName();
+			Object v = value;
+			switch (type) {
+			case "Integer":
+				v = Integer.parseInt(value); break;
+			case "Long":
+				v = Long.parseLong(value); break;
+			}
+ 			if (fieldName.equals(field.getName())) field.set(obj, v);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}

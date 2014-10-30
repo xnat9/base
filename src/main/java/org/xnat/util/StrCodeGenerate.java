@@ -89,6 +89,11 @@ public class StrCodeGenerate {
 		System.out.println(sb.toString());
 	}
 	
+	/**
+	 * 产生　entity 的 private column 字段　字符串
+	 * 
+	 * Oct 30, 2014 1:41:15 PM
+	 */
 	@Test
 	public void genearateEntityFieldStr() {
 		Connection con = DbUtil.getDB().getCon();
