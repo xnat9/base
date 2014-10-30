@@ -85,7 +85,7 @@ public final class Utils_ctrl {
 	 * @throws IOException
 	 * Oct 28, 2014 9:27:42 AM
 	 */
-	public static Person getSessionM_user(HttpServletResponse resp, HttpServletRequest req) throws IOException {
+	public static Object getSessionM_user(HttpServletResponse resp, HttpServletRequest req) throws IOException {
 		JsonObject result = new JsonObject();
 		
 		HttpSession session = req.getSession(false);
@@ -95,7 +95,7 @@ public final class Utils_ctrl {
 			resp.getWriter().write(result.toString());
 			return null;
 		}
-		Person person = (Person) session.getAttribute("m_user");
+		Object person = session.getAttribute("m_user");
 		if (person == null) {
 			result.addProperty("success", false);
 			result.addProperty("msg", "session中的用户信息为空(可能会话失效, 请重新登录!)");
