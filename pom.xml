@@ -1,0 +1,222 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.xnat</groupId>
+	<artifactId>xnat-base</artifactId>
+	<version>0.0.1</version>
+
+	<name>xnat-base</name>
+	<url>http://maven.apache.org</url>
+	<!-- -->
+
+	<description>
+  	人个base可重用库
+  	
+  	添加guzz.jar 试着做简单的集成 mybatis
+  	pojo 添加 Fields 静态内部类 方便 程序直接访问 bean 字段, 并编写自动生成类的字符串的方法(StrCodeGenerate.generateBeanFieldsClass(clazz))
+  	创建了一个专门为数据结构操作的类DataUtls bean xml map autoMap list listmap ...
+  	整理baseDaoUitl_v3 只保留baseDao最新的方法 如: select_v4/select_v4_2 ...
+  	添加了ForeignKey注解, 并在baseDaoUtil_v3 中添加相应的查询方法(关联外键查询)
+  	为每个bean的字段(对应表中的字段)添加@column注解
+  	==============================================
+  	为service层添加Utils_ser工具类
+  	为controller层添加Utils_ctrl工具类
+  	把baseDaoUitl_v3中与数据结构有关的操作方法移到DataUtils中
+  	bug: baseDao.xml.getTotal 中的条件: `${item.key}` ${item.denotation} #{item.value}
+  		没有空格 导致 符号和值在一起了 出现了语法错误 如: namelike?
+  </description>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<!-- <resources> <resource> <directory>src/main/resources</directory> <includes> 
+			<include>*/.xml</include> <include>**/*.properties</include> <include>**/*.tld</include> 
+			</includes> <filtering>false</filtering> </resource> </resources> -->
+	</build>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>3.2.4.RELEASE</spring.version>
+		<mybatis.version>3.1.1</mybatis.version>
+		<mybatis-spring.version>1.1.1</mybatis-spring.version>
+		<!-- <junit.version>3.8.1</junit.version> -->
+		<junit.version>4.11</junit.version>
+		<taglibs.version>1.1.2</taglibs.version>
+		<jstl.version>1.1.2</jstl.version>
+		<servlet.version>3.0.1</servlet.version>
+		<log4j.version>1.2.14</log4j.version>
+		<slf4j.version>1.6.0</slf4j.version>
+		<gson.version>2.2.4</gson.version>
+		<jedis.version>2.4.2</jedis.version>
+		<aspectj.version>1.5.4</aspectj.version>
+		<mysql-jdbc.version>5.1.32</mysql-jdbc.version>
+	</properties>
+
+	<dependencies>
+		<!-- mysql jdbc driver -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-jdbc.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Spring依赖关系 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!--appache commons -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+
+		<!-- appache httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.3.2</version>
+		</dependency>
+
+		<!-- json gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+		</dependency>
+		
+		<!-- J2EE相关依赖 -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		
+		<!--mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${mybatis-spring.version}</version>
+		</dependency>
+		
+		<!-- guzz dao -->
+		<dependency>
+			<groupId>org.guzz</groupId>
+			<artifactId>guzz</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+
+		<!-- 日志相关依赖 -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<!-- junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

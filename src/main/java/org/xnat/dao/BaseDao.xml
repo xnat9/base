@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bigchance.lala.ms.dao.mapper1.BaseDao">
+	<!-- 新增v1-->
+	<insert id="insert">
+		insert into ${tableName}
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			${item.key}
+		</foreach>
+		values
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item.value}
+		</foreach>
+	</insert>
+	<!-- 新增v1_2
+		 useGeneratedKeys="true" keyProperty="id"
+	-->
+	<insert id="insert_v1_2" parameterType="map">
+		insert into ${tableName}
+		<foreach item="item" index="index" collection="autoMaps" open="(" separator="," close=")">
+			${item.key}
+		</foreach>
+		values
+		<foreach item="item" index="index" collection="autoMaps" open="(" separator="," close=")">
+			#{item.value}
+		</foreach>
+		<selectKey resultType="int" keyProperty="autoKey" order="AFTER">
+			select LAST_INSERT_ID() as autoKey
+		</selectKey>
+		<!-- 
+		 -->
+	</insert>
+	
+	
+	<!-- 查询select_v4-->
+	<select id="select_v4" resultType="hashmap">
+		select 
+		<!-- 选择的字段 -->
+		<foreach collection="selectFields" item="item" separator=",">`${item}`</foreach>
+		from ${tableName}
+		<!-- 条件 -->
+		<where>
+			<if test="conditions != null">
+				<foreach collection="conditions" item="condition" separator=" and ">
+				<!-- 
+				${condition.key} ${condition.denotation} #{condition.value} 
+				这种不能适应　denotation　为 "in" value 为 "(v1, v2)"
+				${condition.key} ${condition.denotation} ${condition.value}
+				这种不能适应　 ${condition.value}　为字符串
+				-->
+					`${condition.key}` ${condition.denotation} #{condition.value}
+				</foreach>
+			</if>
+		</where>
+		<!-- 分组 list<String>-->
+		<if test="group != null">
+			group by 
+			<foreach collection="group" item="item" separator=", ">
+				${item}
+			</foreach>
+		</if>
+		<!-- group 后的having 条件 -->
+		<if test="havingSql != null and group != null">
+			${havingSql}
+		</if>
+		<!-- 排序 -->
+		<if test="sort != null">
+			order by 
+			<foreach collection="sort" item="item" separator=", ">
+				${item.key} ${item.value}
+			</foreach>
+		</if>
+		<!-- 分页 -->
+		<if test="page != null">
+			LIMIT #{page.start}, #{page.limit}
+		</if>
+	</select>
+	<!-- 查询select_v4_2-->
+	<select id="select_v4_2" resultType="hashmap">
+		select 
+		<!-- 选择的字段 -->
+		<foreach collection="selectFields" item="item" separator=",">`${item}`</foreach>
+		from ${tableName}
+		<!-- 条件 -->
+		<if test="conditionSql != null">
+		${conditionSql}
+		</if>
+		<!-- 分组 list<String>-->
+		<if test="group != null">
+			group by 
+			<foreach collection="group" item="item" separator=", ">
+				${item}
+			</foreach>
+		</if>
+		<!-- group 后的having 条件 -->
+		<if test="havingSql != null and group != null">
+			${havingSql}
+		</if>
+		<!-- 排序 -->
+		<if test="sort != null">
+			order by 
+			<foreach collection="sort" item="item" separator=", ">
+				${item.key} ${item.value}
+			</foreach>
+		</if>
+		<!-- 分页 -->
+		<if test="page != null">
+			LIMIT #{page.start}, #{page.limit}
+		</if>
+	</select>
+	<!-- 删除_v3-->
+	<delete id="delete_v3">
+		delete from ${tableName}
+		<where>
+			<if test="conditions != null">
+				<foreach item="item" index="index" collection="conditions" separator=" and ">
+					${item.key}${item.denotation}#{item.value}
+				</foreach>
+			</if>
+		</where>
+	</delete>
+	<!-- 删除_v3-->
+	<delete id="delete_v3_2">
+		delete from ${tableName}
+		<if test="conditionSql != null">${conditionSql}</if>
+	</delete>
+	
+	
+	<!-- 更新_v2-->
+	<update id="update_v2">
+		update ${tableName}
+		<set>
+		<foreach item="item" index="index" collection="list" separator=",">
+			${item.key}=#{item.value}
+		</foreach>
+		</set>
+		<where>
+			<if test="conditions != null">
+				<foreach item="item" index="index" collection="conditions" separator=" and ">
+					${item.key} ${item.denotation} #{item.value}
+				</foreach>
+			</if>
+		</where>
+	</update>
+	<!-- 更新_v2-->
+	<update id="update_v2_2">
+		update ${tableName}
+		<set>
+		<foreach item="item" index="index" collection="list" separator=",">
+			${item.key}=#{item.value}
+		</foreach>
+		</set>
+		<if test="conditionSql != null">${conditionSql}</if>
+	</update>
+	
+	<!-- 查询实体存在的数量-->
+	<select id="getTotal" resultType="int">
+		select count(*) from ${tableName}
+		<where>
+			<if test="conditions != null">
+				<foreach item="item" index="index" collection="conditions" separator=" and ">
+					<!-- 
+					${item.key} ${item.denotation} #{item.value}
+					不能用于　key != ''
+					 -->
+					`${item.key}` ${item.denotation} #{item.value}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<!-- 查询实体存在的数量-->
+	<select id="getTotal_v1_2" resultType="int">
+		select count(*) from ${tableName}
+		<if test="conditionSql != null">${conditionSql}</if>
+	</select>
+	
+	<!-- 统计一个字段所有值的和-->
+	<select id="countField" resultType="long">
+		select sum(${fieldName}) from ${tableName}
+		<where>
+			<if test="conditions != null">
+				<foreach item="item" index="index" collection="conditions" separator=" and ">
+					`${item.key}` ${item.denotation} #{item.value}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	
+	<!-- 自定义sql查询-->
+	<select id="selectSql" resultType="hashmap">
+		${sql}
+	</select>
+	
+	
+</mapper>
