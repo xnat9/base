@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,7 +46,7 @@ public class BaseDaoUtil_v3 {
 	 */
 	public Integer insert(Object obj) {
 		setDataSource(obj.getClass());
-		return baseDao.insert(getTableName(obj.getClass()), AutoMap.configSelf(obj));
+		return baseDao.insert(Utils_dao.getTableName(obj.getClass()), AutoMap.configSelf(obj));
 	}
 	/**
 	 * 插入一条记录 返回自增长id
@@ -58,7 +56,7 @@ public class BaseDaoUtil_v3 {
 	 */
 	public Integer insert(Object obj, Map<String, Object> map) {
 		setDataSource(obj.getClass());
-		map.put("tableName", getTableName(obj.getClass()));
+		map.put("tableName", Utils_dao.getTableName(obj.getClass()));
 		map.put("autoMaps", AutoMap.configSelf(obj));
 		return baseDao.insert_v1_2(map);
 	}
@@ -71,14 +69,14 @@ public class BaseDaoUtil_v3 {
 	 */
 	public <T> int delete(Class<T> clazz, List<AutoMap> conditions) {
 		setDataSource(clazz);
-		return baseDao.delete_v3(getTableName(clazz), conditions);
+		return baseDao.delete_v3(Utils_dao.getTableName(clazz), conditions);
 	}
 	public <T> int delete(Object obj) {
 		return delete(obj.getClass(), AutoMap.configSelf(obj));
 	}
 	public <T> int delete(Class<T> clazz, String conditionSql) {
 		setDataSource(clazz);
-		return baseDao.delete_v3_2(getTableName(clazz), conditionSql);
+		return baseDao.delete_v3_2(Utils_dao.getTableName(clazz), conditionSql);
 	}
 	/**
 	 * 根据一个字段的值删除
@@ -99,7 +97,7 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public <T> int deleteById(Class<T> clazz, Object id) {
-		return deleteByField(clazz, getIdField(clazz).getName(), id);
+		return deleteByField(clazz, Utils_dao.getIdField(clazz).getName(), id);
 	}
 	
 	
@@ -118,11 +116,11 @@ public class BaseDaoUtil_v3 {
 	 */
 	public <T> int update(Class<T> clazz, List<AutoMap> setFields, List<AutoMap> conditions) {
 		setDataSource(clazz);
-		return baseDao.update_v2(getTableName(clazz), setFields, conditions);
+		return baseDao.update_v2(Utils_dao.getTableName(clazz), setFields, conditions);
 	}
 	public int update(Object obj, List<AutoMap> setFields, String conditionSql) {
 		setDataSource(obj.getClass());
-		return baseDao.update_v2_2(getTableName(obj.getClass()), setFields, conditionSql);
+		return baseDao.update_v2_2(Utils_dao.getTableName(obj.getClass()), setFields, conditionSql);
 	}
 	
 	/**
@@ -153,7 +151,7 @@ public class BaseDaoUtil_v3 {
 	 * @throws Exception 
 	 */
 	public int updateById(Object obj) {
-		return updateByField(obj, getIdField(obj.getClass()).getName());
+		return updateByField(obj, Utils_dao.getIdField(obj.getClass()).getName());
 	}
 	
 	/**
@@ -175,7 +173,7 @@ public class BaseDaoUtil_v3 {
 	private <T> List<Map<String, Object>> select(Class<T> clazz, 
 			List<String> selectFields, List<AutoMap> conditions, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
 		setDataSource(clazz);
-		return baseDao.select_v4(getTableName(clazz), selectFields, conditions, group, havingSql, sort, page);
+		return baseDao.select_v4(Utils_dao.getTableName(clazz), selectFields, conditions, group, havingSql, sort, page);
 	}
 	/**
 	 * baseDao select_v4_2
@@ -192,7 +190,7 @@ public class BaseDaoUtil_v3 {
 	private <T> List<Map<String, Object>> select(Class<T> clazz, List<String> selectFields,
 			String conditionSql, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
 		setDataSource(clazz);
-		return baseDao.select_v4_2(getTableName(clazz), selectFields, conditionSql, group, havingSql, sort, page);
+		return baseDao.select_v4_2(Utils_dao.getTableName(clazz), selectFields, conditionSql, group, havingSql, sort, page);
 	}
 	/**
 	 * 默认查询所有字段
@@ -206,7 +204,7 @@ public class BaseDaoUtil_v3 {
 	 */
 	public <T> List<Map<String, Object>> select(Class<T> clazz, 
 			List<AutoMap> conditions, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
-		return select(clazz, getAllFields(clazz), conditions, group, havingSql, sort, page);
+		return select(clazz, Utils_dao.getAllFields(clazz), conditions, group, havingSql, sort, page);
 	}
 	/**
 	 * 默认查询所有字段
@@ -220,7 +218,7 @@ public class BaseDaoUtil_v3 {
 	 */
 	public <T> List<Map<String, Object>> select(Class<T> clazz, 
 			String conditionSql, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
-		return select(clazz, getAllFields(clazz), conditionSql, group, havingSql, sort, page);
+		return select(clazz, Utils_dao.getAllFields(clazz), conditionSql, group, havingSql, sort, page);
 	}
 	/**
 	 * 
@@ -230,7 +228,7 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public <T> List<Map<String, Object>> select(Class<T> clazz, String conditionSql, Page page) {
-		return select(clazz, getAllFields(clazz), conditionSql, null, null, null, page);
+		return select(clazz, Utils_dao.getAllFields(clazz), conditionSql, null, null, null, page);
 	}
 	/**
 	 * 
@@ -256,7 +254,7 @@ public class BaseDaoUtil_v3 {
 	 */
 	public <T> List<Map<String, Object>> select(Class<T> clazz, 
 			String conditionSql, List<AutoMap> sort, Page page) {
-		return select(clazz, getAllFields(clazz), conditionSql, null, null, sort, page);
+		return select(clazz, Utils_dao.getAllFields(clazz), conditionSql, null, null, sort, page);
 	}
 	/**
 	 * 
@@ -267,7 +265,7 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public <T> List<Map<String, Object>> select(Class<T> clazz, List<AutoMap> conditions, List<AutoMap> sorts, Page page) {
-		return select(clazz, getAllFields(clazz), conditions, null, null, sorts, page);
+		return select(clazz, Utils_dao.getAllFields(clazz), conditions, null, null, sorts, page);
 	}
 	
 	/**
@@ -311,7 +309,7 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public List<Map<String, Object>> select(Object obj, Page page, List<AutoMap> sorts) {
-		return select(obj.getClass(), getAllFields(obj.getClass()), 
+		return select(obj.getClass(), Utils_dao.getAllFields(obj.getClass()), 
 				AutoMap.configSelf(obj), null, null, sorts, page);
 	}
 	
@@ -349,7 +347,7 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public <T> List<Map<String, Object>> getAllByPage(Class<T> clazz, List<AutoMap> sorts, Page page) {
-		return select(clazz, getAllFields(clazz), (String)null, null, null, sorts, page);
+		return select(clazz, Utils_dao.getAllFields(clazz), (String)null, null, null, sorts, page);
 	}
 	/**
 	 * 从返回的 List<Map<String, Object>> 中查找一个
@@ -403,10 +401,10 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public <T> Object getObjById(Class<T> clazz, Integer id) {
-		return getObjByField(clazz, getIdField(clazz).getName(), id);
+		return getObjByField(clazz, Utils_dao.getIdField(clazz).getName(), id);
 	}
 	public Object getObjById(Object obj) {
-		return getObjByField(obj, getIdField(obj.getClass()).getName());
+		return getObjByField(obj, Utils_dao.getIdField(obj.getClass()).getName());
 	}
 	/**
 	 * 根据一个字段查找多条记录
@@ -454,7 +452,7 @@ public class BaseDaoUtil_v3 {
 	 */
 	public <T> int getTotal(Class<T> clazz, List<AutoMap> conditions) {
 		setDataSource(clazz);
-		return baseDao.getTotal(getTableName(clazz), conditions);
+		return baseDao.getTotal(Utils_dao.getTableName(clazz), conditions);
 	}
 	/**
 	 * 根据条件 得到此条件下的总数
@@ -464,7 +462,7 @@ public class BaseDaoUtil_v3 {
 	 */
 	public <T> int getTotal(Class<T> clazz, String conditionSql) {
 		setDataSource(clazz);
-		return baseDao.getTotal_v1_2(getTableName(clazz), conditionSql);
+		return baseDao.getTotal_v1_2(Utils_dao.getTableName(clazz), conditionSql);
 	}
 	public <T> int getTotal(Class<T> clazz) {
 		return getTotal(clazz, (String) null);
@@ -484,56 +482,6 @@ public class BaseDaoUtil_v3 {
 	 */
 	public <T> long countField(Class<T> clazz, String fieldName, List<AutoMap> conditions) {
 		setDataSource(clazz);
-		return baseDao.countField(getTableName(clazz), fieldName, conditions);
-	}
-	
-	/**
-	 * ===============================
-	 * 工具专区
-	 */
-	
-	/**
-	 * pojo 获取所有字段
-	 * @param clazz
-	 * @return List<String>
-	 */
-	public <T> List<String> getAllFields(Class<T> clazz) {
-		List<String> fields = new ArrayList<String>();
-		Field[] fs = clazz.getDeclaredFields();
-		for (int i=0; i<fs.length; i++) {
-			Column col = fs[i].getAnnotation(Column.class);
-			if (col == null) continue;
-			fields.add(fs[i].getName());
-		}
-		return fields;
-	}
-	/**
-	 * 得到实体的所对应的表名
-	 * @param clazz
-	 * @return 数据库中对应的表名
-	 * Oct 9, 2014 2:50:15 PM
-	 */
-	public <T> String getTableName(Class<T> clazz) {
-//		return clazz.getAnnotation(Table.class).name();
-		return clazz.getAnnotation(Entity.class).tableName();
-	}
-	
-	/**
-	 * 得到注解为javax.persistence.Id的字段
-	 * @param clazz
-	 * @return
-	 * Oct 21, 2014 11:28:16 AM
-	 */
-	public <T> Field getIdField(Class<T> clazz) {
-		for (Field f : clazz.getDeclaredFields()) {
-			if (f.getAnnotation(javax.persistence.Id.class) == null) continue;
-			return f;
-		}
-		try {
-			throw new Exception("此类没有注解为javax.persistence.Id的字段");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return baseDao.countField(Utils_dao.getTableName(clazz), fieldName, conditions);
 	}
 }

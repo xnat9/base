@@ -1,12 +1,25 @@
 package org.xnat.test.jdk8;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.stream.IntStream;
+
+import org.xnat.util.DbUtil;
 
 public class Test {
 	public static void main(String[] args) {
-		new Thread(() -> {
-			System.out.println("lambda实现的线程");
-		}).start();
-		int[] arr = IntStream.range(0, 10000).filter(p -> p%2 == 0).toArray();
+		Connection con = DbUtil.getDB().getCon();
+		String sql = "select * from lala_statistics.m_role";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				System.out.println(rs.getObject(1)+": "+rs.getObject(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -31,7 +31,7 @@ public final class DbUtil {
 //			con = DriverManager.getConnection("jdbc:mysql://112.124.50.179:9110/fom", "bcdev", "@ppvii2014");
 //			con = DriverManager.getConnection("jdbc:mysql://112.124.50.179:9110/lala_authority", "bcdev", "@ppvii2014");
 //			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lala_statistics", "root", "");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/laladb", "root", "");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

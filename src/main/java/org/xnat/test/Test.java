@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import javax.persistence.PrePersist;
 import javax.transaction.TransactionManager;
 
+import org.guzz.service.core.impl.SuperSlowUpdateServiceImpl;
 import org.springframework.aop.framework.ProxyConfig;
 import org.springframework.remoting.support.RemotingSupport;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -28,6 +29,38 @@ public class Test {
 //		TransactionStatus
 //		TransactionManager
 //		ProxyConfig
+	}
+	
+	/**
+	 * 临时为一个类的方法添加新的执行程序
+	 * 
+	 * Oct 30, 2014 9:41:51 PM
+	 */
+	@org.junit.Test
+	public void forObjAddTempFieldOrMethod() {
+		Thread th = new Thread() {
+			@Override
+			public void run() {
+				super.run();
+			}
+		};
+		String name = "abcd";
+		Person p = new Person() {
+			private static final long serialVersionUID = 1L;
+			public String name = "s";
+			public void subMethod() {
+				System.out.println("ssssssssss");
+			}
+			@Override
+			public String getName() {
+				System.out.println("here");
+				subMethod();
+				System.out.println(super.getName());
+				return name;
+			}
+		};
+		p.setName("private name");
+		System.out.println(p.getName());
 	}
 	
 	/**

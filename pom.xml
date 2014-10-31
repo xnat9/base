@@ -23,7 +23,9 @@
   	为controller层添加Utils_ctrl工具类
   	把baseDaoUitl_v3中与数据结构有关的操作方法移到DataUtils中
   	bug: baseDao.xml.getTotal 中的条件: `${item.key}` ${item.denotation} #{item.value}
-  		没有空格 导致 符号和值在一起了 出现了语法错误 如: namelike?
+  		没有空格 导致 符号和值在一起了 出现了语法错误 如: name like?
+  	==============================================
+  	jdbc: jdbc:mysql://localhost:3306　一个数据源连接多个数据库
   </description>
 
 	<build>
