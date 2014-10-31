@@ -11,6 +11,9 @@ public class Page {
 		this.start = start;
 		this.limit = limit;
 	}
+	public Page(int limit) {
+		this.limit = limit;
+	}
 
 	public int getStart() {
 		return start;

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xnat.dao.BaseDao;
 import org.xnat.dao.DataSourceContextHolder;
+import org.xnat.dao.Utils_dao;
 import org.xnat.dao.annotation.Entity;
 import org.xnat.dao.annotation.ForeignKey;
 import org.xnat.util.Utils;
@@ -381,10 +382,19 @@ public class BaseDaoUtil_v3 {
 		}
 		return obj; 
 	}
-	public <T> Object getObjByField(Class<T> clazz, String fieldName, Object fieldValue) {
-		List<AutoMap> conditions = new ArrayList<AutoMap>();
-		conditions.add(new AutoMap(fieldName, "=", fieldValue));
-		List<Map<String, Object>> objs = select(clazz, conditions, null, null);
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param fieldName 字段名
+	 * @param fieldValue　字段值
+	 * @param selectFields　选择要查询的字段
+	 * @return
+	 * Oct 31, 2014 5:38:49 PM
+	 */
+	public <T> Object getObjByField(Class<T> clazz, String fieldName, Object fieldValue, List<String> selectFields) {
+		String conditionSql = "where "+fieldName+"="+fieldValue;
+		List<Map<String, Object>> objs = select(clazz, selectFields, conditionSql, new Page(10));
 		if (objs == null || objs.size() < 1) return null;
 		T obj = null;
 		try {
@@ -394,6 +404,9 @@ public class BaseDaoUtil_v3 {
 			e.printStackTrace();
 		}
 		return obj; 
+	}
+	public <T> Object getObjByField(Class<T> clazz, String fieldName, Object fieldValue) {
+		return getObjByField(clazz, fieldName, fieldValue, Utils_dao.getAllFields(clazz));
 	}
 	/**
 	 * 根据id查找对象
