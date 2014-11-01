@@ -21,7 +21,7 @@
             <!-- 必须要这么写 不然拦截不了 -->
             <mvc:mapping path="/*.do"/>  
 			<mvc:mapping path="/*/*.do" /> 
-            <bean class="com.bigchance.lala.ms.interceptor.Interceptor" />  
+            <bean class="org.xnat.interceptor.Interceptor" />  
         </mvc:interceptor>  
     </mvc:interceptors>  
     <!--注解支持-->
@@ -63,9 +63,9 @@
 		
 		<!-- Connection Pooling DBCP
 		 -->
-		<property name="username" value="${dataSource.username}"></property>
-		<property name="driverClassName" value="${dataSource.driver}"></property>
-		<property name="url" value="${dataSource.url}"></property>
+		<property name="username" value="${dataSource1.username}"></property>
+		<property name="driverClassName" value="${dataSource1.driver}"></property>
+		<property name="url" value="${dataSource.url}{dataSource1.ip}:{dataSource1.port}"></property>
 		<property name="initialSize" value="5" />
 		<property name="maxActive" value="10" />
 		<property name="maxIdle" value="2" />
@@ -88,49 +88,11 @@
 		  -->
 	</bean>
 	
-	<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="password" value="${dataSource.password}"></property>
-		
-		<!-- spring dataSource Mangager 
-		<property name="username" value="${dataSource2.username}"></property>
-		<property name="url" value="${dataSource2.url}"></property>
-		<property name="driverClassName" value="${dataSource2.driver}"></property>
-		-->
-		
-		<!-- Connection Pooling DBCP
-		 -->
-		<property name="username" value="${dataSource2.username}"></property>
-		<property name="driverClassName" value="${dataSource2.driver}"></property>
-		<property name="url" value="${dataSource2.url}"></property>
-		<property name="initialSize" value="5" />
-		<property name="maxActive" value="10" />
-		<property name="maxIdle" value="2" />
-		<property name="maxWait" value="1000" />
-		<property name= "testOnBorrow" value="true" />  
-        <property name= "testOnReturn" value="false" />  
-        <property name= "validationQuery" value="select 1" /> 
-        <property name="removeAbandoned" value="true"/> 
-        <property name= "testWhileIdle" value="false" />
-		
-		 <!-- c3p0 pool 
-		 
- 		<property name="user" value="${dataSource2.username}"></property>
-		<property name="driverClass" value="${dataSource2.driver}"></property>
- 		<property name="jdbcUrl" value="${dataSource.url}"></property>
-		 <property name="initialPoolSize" value="5"/>
-		 <property name="maxPoolSize" value="10"/>
-		 <property name="minPoolSize" value="2"/>
-		 <property name="acquireIncrement" value="2"/>
-		 <property name="maxIdleTime" value="1800"/>
-		 <property name="acquireRetryAttempts" value="30" /> 
-		 -->
-	</bean>
 	<!-- 动态数据源 -->
 	<bean id="dynamicDataSource" class="com.bigchance.lala.ms.dao.DynamicDataSource">
 		<property name="targetDataSources">  
 	        <map key-type="java.lang.String">  
-	            <entry value-ref="dataSource1" key="${dataSource.id}"></entry>  
-	            <entry value-ref="dataSource2" key="${dataSource2.id}"></entry>  
+	            <entry value-ref="dataSource1" key="${dataSource1.id}"></entry>  
 	        </map>
 	    </property>  
 	    <property name="defaultTargetDataSource" ref="dataSource1"></property> 
@@ -155,7 +117,7 @@
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
-		<property name="basePackage" value="com.bigchance.lala.ms.dao.mapper1" />
+		<property name="basePackage" value="org.xnat.dao" />
 	</bean>
 	<!-- 
 	<bean id="sessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean" >
@@ -191,11 +153,7 @@
 		<property name="dataSource" ref="dataSource1" />
 	</bean>
 	
-	<bean id="transactionManager2" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource2" />
-	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager1" />
-	<tx:annotation-driven transaction-manager="transactionManager2" />
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	
 	

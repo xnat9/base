@@ -1,43 +1,14 @@
 package org.xnat.test;
 
-import java.lang.reflect.Field;
-import java.rmi.Remote;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.persistence.PrePersist;
-import javax.transaction.TransactionManager;
-
-import org.guzz.service.core.impl.SuperSlowUpdateServiceImpl;
-import org.springframework.aop.framework.ProxyConfig;
-import org.springframework.jdbc.object.SqlUpdate;
-import org.springframework.remoting.support.RemotingSupport;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.xnat.dao.util.BaseDaoUtil_v3;
 import org.xnat.entity.Person;
 import org.xnat.util.DbUtil;
 
 public class Test {
-	public static void main(String[] args) {
-		get(new Person());
-//		AuthenticationProvider
-//		RemotingSupport
-//		Remote
-//		UnicastRemoteObject
-//		PlatformTransactionManager
-//		TransactionStatus
-//		TransactionManager
-//		ProxyConfig
-	}
-	
-	public static <T> void get(T clazz) {
-	}
-	
 	/**
 	 * 临时为一个类的方法添加新的执行程序
 	 * 

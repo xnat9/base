@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.xnat.dao.util.AutoMap;
+import org.xnat.dao.util.DataUtils;
 import org.xnat.entity.Person;
 
 import com.google.gson.JsonObject;
@@ -77,6 +78,43 @@ public final class Utils_ctrl {
 		}
 	}
 	
+	/**
+	 * 从request中获取的所有参数 只获取一部分与 特定的entity字段相同的参数名 来创造一个entity
+	 * (不把所有传过来的参数都注入到entity中, 只选择一部分注入)
+	 * @param <T>
+	 * @param req
+	 * @param fields
+	 * @return
+	 * Oct 29, 2014 9:41:54 AM
+	 */
+	public static <T> Object populateBean(Class<T> clazz, HttpServletRequest req, String... fields) {
+		T obj = null;
+		try {
+			obj = clazz.newInstance();
+			
+			Map<String, String[]> map = req.getParameterMap();
+			Iterator<String> it = map.keySet().iterator();
+			
+			if (fields == null || fields.length == 0) {
+				while (it.hasNext()) {
+					String key = it.next();
+					DataUtils.bean_setValueForField(obj, key, req.getParameter(key));
+				}
+			} else {
+				while (it.hasNext()) {
+					String key = it.next();
+					for (String field : fields) {
+						if (key.equals(field)) {
+							DataUtils.bean_setValueForField(obj, key, req.getParameter(key));
+						}
+					}
+				}
+			}
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
 	/**
 	 * 获取会话, 并获取会话中的登录用户信息
 	 * @param resp

@@ -1,4 +1,4 @@
-package org.xnat.util;
+package org.xnat.dao.util;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -9,6 +9,7 @@ import javax.persistence.Column;
 
 import org.junit.Test;
 import org.xnat.entity.Person;
+import org.xnat.util.DbUtil;
 
 /**
  * 自制定代码生成类
