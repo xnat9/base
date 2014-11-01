@@ -13,7 +13,9 @@ import javax.transaction.TransactionManager;
 
 import org.guzz.service.core.impl.SuperSlowUpdateServiceImpl;
 import org.springframework.aop.framework.ProxyConfig;
+import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.remoting.support.RemotingSupport;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.xnat.dao.util.BaseDaoUtil_v3;
@@ -22,6 +24,8 @@ import org.xnat.util.DbUtil;
 
 public class Test {
 	public static void main(String[] args) {
+		get(new Person());
+//		AuthenticationProvider
 //		RemotingSupport
 //		Remote
 //		UnicastRemoteObject
@@ -29,6 +33,9 @@ public class Test {
 //		TransactionStatus
 //		TransactionManager
 //		ProxyConfig
+	}
+	
+	public static <T> void get(T clazz) {
 	}
 	
 	/**

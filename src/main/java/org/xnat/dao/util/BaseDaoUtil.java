@@ -10,6 +10,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xnat.dao.BaseDao;
+import org.xnat.dao.BaseDao_v2;
 import org.xnat.dao.DataSourceContextHolder;
 import org.xnat.dao.Utils_dao;
 import org.xnat.dao.annotation.Entity;
@@ -17,14 +18,14 @@ import org.xnat.dao.annotation.ForeignKey;
 import org.xnat.util.Utils;
 
 /**
- * dao 层通用　用的是　BaseDao
+ * dao 层通用　用的是　BaseDao_v2
  * @author xnat
- * Nov 1, 2014 2:50:21 PM
+ * Nov 1, 2014 3:45:09 PM
  */
 @Component
-public class BaseDaoUtil_v3 {
+public class BaseDaoUtil {
 	@Autowired
-	private BaseDao baseDao;
+	private BaseDao_v2 baseDao_v2;
 	
 	/**
 	 * 切换数据源
@@ -32,12 +33,6 @@ public class BaseDaoUtil_v3 {
 	 * Oct 16, 2014 4:19:27 PM
 	 */
 	public static <T> void setDataSource(Class<T> clazz) {
-		if (DataSourceContextHolder.DATASOURCE1.equals(clazz.getAnnotation(Entity.class).dataSourceId())) {
-			DataSourceContextHolder.setDbType(DataSourceContextHolder.DATASOURCE1);
-		}
-		else if (DataSourceContextHolder.DATASOURCE2.equals(clazz.getAnnotation(Entity.class).dataSourceId())) {
-			DataSourceContextHolder.setDbType(DataSourceContextHolder.DATASOURCE2);
-		}
 		
 	}
 	/**
@@ -50,21 +45,21 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 * Oct 16, 2014 4:23:09 PM
 	 */
-	public Integer insert(Object obj) {
-		setDataSource(obj.getClass());
-		return baseDao.insert(Utils_dao.getTableName(obj.getClass()), AutoMap.configSelf(obj));
+	public int insert(Object obj) {
+		return baseDao_v2.insert(Utils_dao.getDbName(obj.getClass()), 
+				Utils_dao.getTableName(obj.getClass()), AutoMap.configSelf(obj));
 	}
 	/**
-	 * 插入一条记录 返回自增长id
+	 * 存入一条记录 保存 自增长键的值到map 中的autoKey
 	 * @param obj
-	 * @param map　(保存tableName, autoMaps)
+	 * @param map　{dbName: '数据名', tableName: '表名',　autoMaps:　'(key:value)的list'}
 	 * @return
 	 */
-	public Integer insert(Object obj, Map<String, Object> map) {
-		setDataSource(obj.getClass());
+	public int insert(Object obj, Map<String, Object> map) {
+		map.put("dbName", Utils_dao.getDbName(obj.getClass()));
 		map.put("tableName", Utils_dao.getTableName(obj.getClass()));
 		map.put("autoMaps", AutoMap.configSelf(obj));
-		return baseDao.insert_v1_2(map);
+		return baseDao_v2.insert_v1_2(map);
 	}
 	
 	/**
@@ -74,15 +69,13 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public <T> int delete(Class<T> clazz, List<AutoMap> conditions) {
-		setDataSource(clazz);
-		return baseDao.delete_v3(Utils_dao.getTableName(clazz), conditions);
+		return baseDao_v2.delete(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), conditions);
+	}
+	public <T> int delete(Class<T> clazz, String conditionSql) {
+		return baseDao_v2.delete_v1_2(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), conditionSql);
 	}
 	public <T> int delete(Object obj) {
 		return delete(obj.getClass(), AutoMap.configSelf(obj));
-	}
-	public <T> int delete(Class<T> clazz, String conditionSql) {
-		setDataSource(clazz);
-		return baseDao.delete_v3_2(Utils_dao.getTableName(clazz), conditionSql);
 	}
 	/**
 	 * 根据一个字段的值删除
@@ -92,9 +85,7 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public <T> int deleteByField(Class<T> clazz, String fieldName, Object fieldValue) {
-		List<AutoMap> conditions = new ArrayList<AutoMap>();
-		conditions.add(new AutoMap(fieldName, "=", fieldValue));
-		return delete(clazz, conditions);
+		return delete(clazz, "WHERE "+fieldName+"="+fieldValue);
 	}
 	/**
 	 * 根据id字段删除
@@ -105,7 +96,6 @@ public class BaseDaoUtil_v3 {
 	public <T> int deleteById(Class<T> clazz, Object id) {
 		return deleteByField(clazz, Utils_dao.getIdField(clazz).getName(), id);
 	}
-	
 	
 	
 	/**
@@ -121,12 +111,10 @@ public class BaseDaoUtil_v3 {
 	 * Oct 10, 2014 5:53:49 PM
 	 */
 	public <T> int update(Class<T> clazz, List<AutoMap> setFields, List<AutoMap> conditions) {
-		setDataSource(clazz);
-		return baseDao.update_v2(Utils_dao.getTableName(clazz), setFields, conditions);
+		return baseDao_v2.update(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), setFields, conditions);
 	}
 	public int update(Object obj, List<AutoMap> setFields, String conditionSql) {
-		setDataSource(obj.getClass());
-		return baseDao.update_v2_2(Utils_dao.getTableName(obj.getClass()), setFields, conditionSql);
+		return baseDao_v2.update_v1_2(Utils_dao.getDbName(obj.getClass()), Utils_dao.getTableName(obj.getClass()), setFields, conditionSql);
 	}
 	
 	/**
@@ -138,6 +126,9 @@ public class BaseDaoUtil_v3 {
 	public int update(Object obj, List<AutoMap> conditions) {
 		return update(obj.getClass(), AutoMap.configSelf(obj), conditions);
 	}
+	public int update(Object obj, String conditionSql) {
+		return update(obj.getClass(), AutoMap.configSelf(obj), conditionSql);
+	}
 	
 	/**
 	 * 根据任意一个字段更新
@@ -146,9 +137,7 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public int updateByField(Object obj, String fieldName) {
-		ArrayList<AutoMap> conditions = new ArrayList<AutoMap>();
-		conditions.add(new AutoMap(fieldName, "=", DataUtils.bean_getFieldValue(obj, fieldName)));
-		return update(obj, conditions);
+		return update(obj, "WHERE "+fieldName+"="+DataUtils.bean_getFieldValue(obj, fieldName));
 	}
 	/**
 	 * 根据id字段更新
@@ -165,7 +154,7 @@ public class BaseDaoUtil_v3 {
 	 */
 	
 	/**
-	 * baseDao select_v4
+	 * baseDao select v1
 	 * @param <T>
 	 * @param tableName 表名
 	 * @param selectFields 要查询的字段
@@ -178,35 +167,21 @@ public class BaseDaoUtil_v3 {
 	 */
 	private <T> List<Map<String, Object>> select(Class<T> clazz, 
 			List<String> selectFields, List<AutoMap> conditions, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
-		setDataSource(clazz);
-		return baseDao.select_v4(Utils_dao.getTableName(clazz), selectFields, conditions, group, havingSql, sort, page);
+		return baseDao_v2.select(Utils_dao.getDbName(clazz), 
+				Utils_dao.getTableName(clazz), selectFields, conditions, group, havingSql, sort, page);
 	}
 	/**
-	 * baseDao select_v4_2
-	 * @param tableName
-	 * @param selectFields
-	 * @param conditionSql 条件为字符串 以 "where 开头"
-	 * @param group
-	 * @param havingSql
-	 * @param sort
-	 * @param page
+	 * @param conditionSql 条件字符串　格式:　"where+条件(如:　in/or ...)"
 	 * @return
-	 * Oct 16, 2014 3:13:49 PM
+	 * Nov 1, 2014 7:21:40 PM
 	 */
 	private <T> List<Map<String, Object>> select(Class<T> clazz, List<String> selectFields,
 			String conditionSql, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
-		setDataSource(clazz);
-		return baseDao.select_v4_2(Utils_dao.getTableName(clazz), selectFields, conditionSql, group, havingSql, sort, page);
+		return baseDao_v2.select_v1_2(Utils_dao.getDbName(clazz), 
+				Utils_dao.getTableName(clazz), selectFields, conditionSql, group, havingSql, sort, page);
 	}
 	/**
 	 * 默认查询所有字段
-	 * @param clazz
-	 * @param conditions 条件为List<AutoMap>
-	 * @param group
-	 * @param havingSql
-	 * @param sort
-	 * @param page
-	 * @return
 	 */
 	public <T> List<Map<String, Object>> select(Class<T> clazz, 
 			List<AutoMap> conditions, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
@@ -214,25 +189,13 @@ public class BaseDaoUtil_v3 {
 	}
 	/**
 	 * 默认查询所有字段
-	 * @param clazz
 	 * @param conditionSql 条件为字符串 以 "where 开头"
-	 * @param group
-	 * @param havingSql
-	 * @param sort
-	 * @param page
-	 * @return
 	 */
 	public <T> List<Map<String, Object>> select(Class<T> clazz, 
 			String conditionSql, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
 		return select(clazz, Utils_dao.getAllFields(clazz), conditionSql, group, havingSql, sort, page);
 	}
-	/**
-	 * 
-	 * @param clazz
-	 * @param conditionSql 条件为字符串 以 "where 开头"
-	 * @param page
-	 * @return
-	 */
+
 	public <T> List<Map<String, Object>> select(Class<T> clazz, String conditionSql, Page page) {
 		return select(clazz, Utils_dao.getAllFields(clazz), conditionSql, null, null, null, page);
 	}
@@ -320,32 +283,15 @@ public class BaseDaoUtil_v3 {
 	}
 	
 	/**
-	 * 自定义sql(用程序拼装任意sql) 查询
+	 * 自定义sql(用程序拼装任意sql) 查询 注意: select 时要加库名
 	 * @param sql
 	 * @return
 	 */
 	public List<Map<String, Object>> select(String sql) {
-		return baseDao.selectSql(sql);
+		return baseDao_v2.selectSql(sql);
 	}
-	/**
-	 * 
-	 * @param sql
-	 * @param clazz 为了确定数据源
-	 * @return
-	 * Oct 16, 2014 2:21:45 PM
-	 */
-	public <T> List<Map<String, Object>> select(String sql, Class<T> clazz) {
-		setDataSource(clazz);
-		return baseDao.selectSql(sql);
-	}
-	/**
-	 * 查询所有
-	 * @param clazz
-	 * @return
-	 */
-	public <T> List<Map<String, Object>> getAll(Class<T> clazz) {
-		return getAllByPage(clazz, null, new Page(0, 500));
-	}
+	
+	
 	/**
 	 * 查询所有(有排序, 分页)
 	 * @param clazz
@@ -356,40 +302,16 @@ public class BaseDaoUtil_v3 {
 		return select(clazz, Utils_dao.getAllFields(clazz), (String)null, null, null, sorts, page);
 	}
 	/**
-	 * 从返回的 List<Map<String, Object>> 中查找一个
-	 * @param maps
-	 * @param key
+	 * 查询所有(默认只查询前500条)
+	 * @param clazz
 	 * @return
 	 */
-//	public Map<String, Object> getMapFromList(List<Map<String, Object>> maps, String key) {
-//		for (Map<String, Object> map: maps) {
-//			Iterator<String> it = map.keySet().iterator();
-//			while (it.hasNext()) if (key.equals(it.next())) return map; 
-//		}
-//		return null;
-//	}
-	/**
-	 * 根据一个字段查找一个对象
-	 * @param obj
-	 * @param fieldName
-	 * @return
-	 */
-	public Object getObjByField(Object obj, String fieldName) {
-		List<AutoMap> conditions = new ArrayList<AutoMap>();
-		conditions.add(new AutoMap(fieldName, "=", DataUtils.bean_getFieldValue(obj, fieldName)));
-		List<Map<String, Object>> objs = select(obj.getClass(), conditions, null, null);
-		
-		if (objs == null || objs.size() < 1) return null;
-		try {
-			BeanUtils.populate(obj, objs.get(0));
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		return obj; 
+	public <T> List<Map<String, Object>> getAll(Class<T> clazz) {
+		return getAllByPage(clazz, null, new Page(0, 500));
 	}
 	
 	/**
-	 * 
+	 * 根据一个字段查找一个对象
 	 * @param clazz
 	 * @param fieldName 字段名
 	 * @param fieldValue　字段值
@@ -398,8 +320,8 @@ public class BaseDaoUtil_v3 {
 	 * Oct 31, 2014 5:38:49 PM
 	 */
 	public <T> Object getObjByField(Class<T> clazz, String fieldName, Object fieldValue, List<String> selectFields) {
-		String conditionSql = "where "+fieldName+"="+fieldValue;
-		List<Map<String, Object>> objs = select(clazz, selectFields, conditionSql, new Page(10));
+		String conditionSql = "WHERE "+fieldName+"="+fieldValue;
+		List<Map<String, Object>> objs = select(clazz, selectFields, conditionSql, new Page(1));
 		if (objs == null || objs.size() < 1) return null;
 		T obj = null;
 		try {
@@ -410,6 +332,19 @@ public class BaseDaoUtil_v3 {
 		}
 		return obj; 
 	}
+	public Object getObjByField(Object obj, String fieldName) {
+		List<Map<String, Object>> objs = select(obj.getClass(), 
+				"WHERE "+fieldName+"="+DataUtils.bean_getFieldValue(obj, fieldName), null, null);
+		
+		if (objs == null || objs.size() < 1) return null;
+		try {
+			BeanUtils.populate(obj, objs.get(0));
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return obj; 
+	}
+	
 	public <T> Object getObjByField(Class<T> clazz, String fieldName, Object fieldValue) {
 		return getObjByField(clazz, fieldName, fieldValue, Utils_dao.getAllFields(clazz));
 	}
@@ -418,11 +353,24 @@ public class BaseDaoUtil_v3 {
 	 * @param obj
 	 * @return
 	 */
-	public <T> Object getObjById(Class<T> clazz, Integer id) {
+	public <T> Object getObjById(Class<T> clazz, int id) {
 		return getObjByField(clazz, Utils_dao.getIdField(clazz).getName(), id);
 	}
 	public Object getObjById(Object obj) {
 		return getObjByField(obj, Utils_dao.getIdField(obj.getClass()).getName());
+	}
+	
+	/**
+	 * 根据一个字段查找多条记录
+	 * @param clazz
+	 * @param fieldName
+	 * @param fieldValue
+	 * @param page
+	 * @return
+	 * Oct 17, 2014 10:00:33 AM
+	 */
+	public <T> List<Map<String, Object>> getObjsByField(Class<T> clazz, String fieldName, Object fieldValue, Page page) {
+		return select(clazz, "WHERE "+fieldName+"="+fieldValue, null, page);
 	}
 	/**
 	 * 根据一个字段查找多条记录
@@ -434,28 +382,15 @@ public class BaseDaoUtil_v3 {
 		return getObjsByField(obj.getClass(), fieldName, DataUtils.bean_getFieldValue(obj, fieldName));
 	}
 	/**
-	 * 根据一个字段查找多条记录
+	 * 根据一个字段查找多条记录(最多500条记录)
 	 * @param clazz
 	 * @param fieldName
 	 * @param fieldValue
-	 * @param page
 	 * @return
-	 * Oct 17, 2014 10:00:33 AM
-	 */
-	public <T> List<Map<String, Object>> getObjsByField(Class<T> clazz, String fieldName, Object fieldValue, Page page) {
-		List<AutoMap> conditions = new ArrayList<AutoMap>();
-		conditions.add(new AutoMap(fieldName, "=", fieldValue));
-		return select(clazz, conditions, null, page);
-	}
-	/**
-	 * 根据一个字段查找多条记录
-	 * @param <T>
-	 * @param obj
-	 * @param fieldName
-	 * @return
+	 * Nov 1, 2014 7:39:43 PM
 	 */
 	public <T> List<Map<String, Object>> getObjsByField(Class<T> clazz, String fieldName, Object fieldValue) {
-		return getObjsByField(clazz, fieldName, fieldValue, null);
+		return getObjsByField(clazz, fieldName, fieldValue, new Page(500));
 	}
 	
 	/**
@@ -469,8 +404,7 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public <T> int getTotal(Class<T> clazz, List<AutoMap> conditions) {
-		setDataSource(clazz);
-		return baseDao.getTotal(Utils_dao.getTableName(clazz), conditions);
+		return baseDao_v2.getTotal(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), conditions);
 	}
 	/**
 	 * 根据条件 得到此条件下的总数
@@ -479,8 +413,7 @@ public class BaseDaoUtil_v3 {
 	 * @return
 	 */
 	public <T> int getTotal(Class<T> clazz, String conditionSql) {
-		setDataSource(clazz);
-		return baseDao.getTotal_v1_2(Utils_dao.getTableName(clazz), conditionSql);
+		return baseDao_v2.getTotal_v1_2(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), conditionSql);
 	}
 	public <T> int getTotal(Class<T> clazz) {
 		return getTotal(clazz, (String) null);
@@ -499,7 +432,6 @@ public class BaseDaoUtil_v3 {
 	 * Oct 16, 2014 4:07:44 PM
 	 */
 	public <T> long countField(Class<T> clazz, String fieldName, List<AutoMap> conditions) {
-		setDataSource(clazz);
-		return baseDao.countField(Utils_dao.getTableName(clazz), fieldName, conditions);
+		return baseDao_v2.countField(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), fieldName, conditions);
 	}
 }

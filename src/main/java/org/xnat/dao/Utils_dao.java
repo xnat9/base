@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
 
 import org.xnat.dao.annotation.Entity;
 
@@ -38,9 +39,21 @@ public final class Utils_dao {
 	 * Oct 9, 2014 2:50:15 PM
 	 */
 	public static <T> String getTableName(Class<T> clazz) {
-//		return clazz.getAnnotation(Table.class).name();
-		return clazz.getAnnotation(Entity.class).tableName();
+		return clazz.getAnnotation(Table.class).name();
+//		return clazz.getAnnotation(Entity.class).tableName();
 	}
+	/**
+	 * 得到数据库名
+	 * @param clazz
+	 * @return
+	 * Nov 1, 2014 3:42:52 PM
+	 */
+	public static<T> String getDbName(Class<T> clazz) {
+		String dbName = clazz.getAnnotation(Table.class).schema();
+		if (dbName.trim().isEmpty()) {}
+		return dbName;
+	}
+	
 	
 	/**
 	 * 得到注解为javax.persistence.Id的字段

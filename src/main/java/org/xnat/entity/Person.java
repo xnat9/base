@@ -11,8 +11,8 @@ import org.xnat.dao.annotation.Entity;
  * @author xnat
  * Oct 21, 2014 10:45:38 AM
  */
-@Table(name="person")
-@Entity(tableName=Person.tabName)
+@Table(name="person", schema="tableName")
+//@Entity(tableName=Person.tabName)
 //@Table(name="person", catalog="d1") // name=表名, catalog=数据库名 use entity
 public class Person extends BaseEntity {
 	private static final long serialVersionUID = -5509060101810976486L;
