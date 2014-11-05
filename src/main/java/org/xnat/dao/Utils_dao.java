@@ -49,8 +49,13 @@ public final class Utils_dao {
 	 * Nov 1, 2014 3:42:52 PM
 	 */
 	public static<T> String getDbName(Class<T> clazz) {
-		String dbName = clazz.getAnnotation(Table.class).schema();
-		if (dbName.trim().isEmpty()) {}
+		String dbName = "";
+		Table t = clazz.getAnnotation(Table.class);
+		if (t != null) dbName = t.schema();
+		if (dbName.isEmpty()) {
+			dbName = DynamicDatabase.getDbname();
+//			return 用静态类的静态字段表示当前数据库
+		}
 		return dbName;
 	}
 	

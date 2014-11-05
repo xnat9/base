@@ -39,6 +39,9 @@ public class StrCodeGenerate {
 				type = "int"; break;
 			case "String":
 				type = "string"; break;
+			case "Double":
+			case "Float":
+				type = "float"; break;
 			default:
 				try {
 					throw new Exception("添加类型"+type);

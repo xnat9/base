@@ -120,6 +120,7 @@ public interface BaseDao_v2 {
 	 * @return
 	 */
 	public int getTotal(@Param("dbName")String dbName, 
+			@Param("primarykey")String primarykey,
 			@Param("tableName")String tableName, 
 			@Param("conditions") List<AutoMap> conditions);
 
@@ -130,6 +131,7 @@ public interface BaseDao_v2 {
 	 * Nov 1, 2014 3:29:55 PM
 	 */
 	public int getTotal_v1_2(@Param("dbName")String dbName, 
+			@Param("primarykey")String primarykey,
 			@Param("tableName")String tableName, 
 			@Param("conditionSql")String conditionSql);
 	

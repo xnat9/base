@@ -16,6 +16,7 @@ import org.xnat.dao.annotation.Entity;
 import org.xnat.dao.annotation.ForeignKey;
 import org.xnat.util.Utils;
 
+
 /**
  * dao 层通用　用的是　BaseDao
  * @author xnat
@@ -124,9 +125,9 @@ public class BaseDaoUtil_v3 {
 		setDataSource(clazz);
 		return baseDao.update_v2(Utils_dao.getTableName(clazz), setFields, conditions);
 	}
-	public int update(Object obj, List<AutoMap> setFields, String conditionSql) {
-		setDataSource(obj.getClass());
-		return baseDao.update_v2_2(Utils_dao.getTableName(obj.getClass()), setFields, conditionSql);
+	public <T> int update(Class<T> clazz, List<AutoMap> setFields, String conditionSql) {
+		setDataSource(clazz);
+		return baseDao.update_v2_2(Utils_dao.getTableName(clazz), setFields, conditionSql);
 	}
 	
 	/**
@@ -138,7 +139,9 @@ public class BaseDaoUtil_v3 {
 	public int update(Object obj, List<AutoMap> conditions) {
 		return update(obj.getClass(), AutoMap.configSelf(obj), conditions);
 	}
-	
+	public int update(Object obj, String conditionSql) {
+		return update(obj.getClass(), AutoMap.configSelf(obj), conditionSql);
+	}
 	/**
 	 * 根据任意一个字段更新
 	 * @param obj

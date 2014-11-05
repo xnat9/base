@@ -2,18 +2,14 @@ package org.xnat.dao.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.xnat.dao.BaseDao;
 import org.xnat.dao.BaseDao_v2;
-import org.xnat.dao.DataSourceContextHolder;
 import org.xnat.dao.Utils_dao;
-import org.xnat.dao.annotation.Entity;
 import org.xnat.dao.annotation.ForeignKey;
 import org.xnat.util.Utils;
 
@@ -113,8 +109,8 @@ public class BaseDaoUtil {
 	public <T> int update(Class<T> clazz, List<AutoMap> setFields, List<AutoMap> conditions) {
 		return baseDao_v2.update(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), setFields, conditions);
 	}
-	public int update(Object obj, List<AutoMap> setFields, String conditionSql) {
-		return baseDao_v2.update_v1_2(Utils_dao.getDbName(obj.getClass()), Utils_dao.getTableName(obj.getClass()), setFields, conditionSql);
+	public <T> int update(Class<T> clazz, List<AutoMap> setFields, String conditionSql) {
+		return baseDao_v2.update_v1_2(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), setFields, conditionSql);
 	}
 	
 	/**
@@ -167,6 +163,7 @@ public class BaseDaoUtil {
 	 */
 	private <T> List<Map<String, Object>> select(Class<T> clazz, 
 			List<String> selectFields, List<AutoMap> conditions, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
+		if (page == null) page = new Page(100);
 		return baseDao_v2.select(Utils_dao.getDbName(clazz), 
 				Utils_dao.getTableName(clazz), selectFields, conditions, group, havingSql, sort, page);
 	}
@@ -177,6 +174,7 @@ public class BaseDaoUtil {
 	 */
 	private <T> List<Map<String, Object>> select(Class<T> clazz, List<String> selectFields,
 			String conditionSql, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
+		if (page == null) page = new Page(100);
 		return baseDao_v2.select_v1_2(Utils_dao.getDbName(clazz), 
 				Utils_dao.getTableName(clazz), selectFields, conditionSql, group, havingSql, sort, page);
 	}
@@ -404,7 +402,7 @@ public class BaseDaoUtil {
 	 * @return
 	 */
 	public <T> int getTotal(Class<T> clazz, List<AutoMap> conditions) {
-		return baseDao_v2.getTotal(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), conditions);
+		return baseDao_v2.getTotal(Utils_dao.getDbName(clazz), Utils_dao.getIdField(clazz).getName(), Utils_dao.getTableName(clazz), conditions);
 	}
 	/**
 	 * 根据条件 得到此条件下的总数
@@ -413,7 +411,7 @@ public class BaseDaoUtil {
 	 * @return
 	 */
 	public <T> int getTotal(Class<T> clazz, String conditionSql) {
-		return baseDao_v2.getTotal_v1_2(Utils_dao.getDbName(clazz), Utils_dao.getTableName(clazz), conditionSql);
+		return baseDao_v2.getTotal_v1_2(Utils_dao.getDbName(clazz), Utils_dao.getIdField(clazz).getName(), Utils_dao.getTableName(clazz), conditionSql);
 	}
 	public <T> int getTotal(Class<T> clazz) {
 		return getTotal(clazz, (String) null);

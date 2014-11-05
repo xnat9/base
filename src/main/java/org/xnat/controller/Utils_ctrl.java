@@ -63,8 +63,8 @@ public final class Utils_ctrl {
 	 * @param clazz
 	 * Oct 23, 2014 10:34:39 AM
 	 */
-	public static <T> void setDenotation(List<AutoMap> condtitions, Class<T> clazz) {
-		for (AutoMap map : condtitions) {
+	public static <T> void setDenotation(List<AutoMap> conditions, Class<T> clazz) {
+		for (AutoMap map : conditions) {
 			try {
 				Field field = clazz.getDeclaredField(map.getKey());
 				switch(field.getType().getSimpleName()) {
