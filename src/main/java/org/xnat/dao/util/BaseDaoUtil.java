@@ -142,7 +142,9 @@ public class BaseDaoUtil {
 	 * @throws Exception 
 	 */
 	public int updateById(Object obj) {
-		return updateByField(obj, Utils_dao.getIdField(obj.getClass()).getName());
+		String idStr = Utils_dao.getIdField(obj.getClass()).getName();
+		if (DataUtils.bean_getFieldValue(obj, idStr) == null) return 0;
+		return updateByField(obj, idStr);
 	}
 	
 	/**

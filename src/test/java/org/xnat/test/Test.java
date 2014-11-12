@@ -5,10 +5,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.jdbc.object.MappingSqlQuery;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.xnat.entity.BaseEntity;
 import org.xnat.entity.Person;
 import org.xnat.util.DbUtil;
 
+import com.google.gson.Gson;
+
 public class Test {
+	public static void main(String[] args) {
+		BaseEntity p = new Gson().fromJson("", Person.class);
+//		MappingSqlQuery<T>
+//		AuthenticationManager
+//		AccessDecisionManager
+	}
 	/**
 	 * 临时为一个类的方法添加新的执行程序
 	 * 
