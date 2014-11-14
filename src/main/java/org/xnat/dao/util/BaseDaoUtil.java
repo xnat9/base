@@ -354,6 +354,9 @@ public class BaseDaoUtil {
 	public <T> Object getObjById(Class<T> clazz, int id) {
 		return getObjByField(clazz, Utils_dao.getIdField(clazz).getName(), id);
 	}
+	public <T> Object getObjById(Class<T> clazz, List<String> selectFields, int id) {
+		return getObjByField(clazz, Utils_dao.getIdField(clazz).getName(), id, selectFields);
+	}
 	public Object getObjById(Object obj) {
 		return getObjByField(obj, Utils_dao.getIdField(obj.getClass()).getName());
 	}
