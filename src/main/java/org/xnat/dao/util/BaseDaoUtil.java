@@ -163,7 +163,8 @@ public class BaseDaoUtil {
 	 */
 	private <T> List<Map<String, Object>> select(Class<T> clazz, 
 			List<String> selectFields, List<AutoMap> conditions, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
-		if (page == null) page = new Page(100);
+		if (page == null) page = new Page(50);
+		if (selectFields == null) selectFields = Utils_dao.getAllFields(clazz);
 		return baseDao_v2.select(Utils_dao.getDbName(clazz), 
 				Utils_dao.getTableName(clazz), selectFields, conditions, group, havingSql, sort, page);
 	}
@@ -175,6 +176,7 @@ public class BaseDaoUtil {
 	private <T> List<Map<String, Object>> select(Class<T> clazz, List<String> selectFields,
 			String conditionSql, List<String> group, String havingSql, List<AutoMap> sort, Page page) {
 		if (page == null) page = new Page(100);
+		if (selectFields == null) selectFields = Utils_dao.getAllFields(clazz);
 		return baseDao_v2.select_v1_2(Utils_dao.getDbName(clazz), 
 				Utils_dao.getTableName(clazz), selectFields, conditionSql, group, havingSql, sort, page);
 	}
@@ -245,6 +247,7 @@ public class BaseDaoUtil {
 	 * @return
 	 * Oct 16, 2014 9:38:43 PM
 	 */
+	@Deprecated
 	public <T> List<Map<String, Object>> select(Class<T> clazz, 
 			List<AutoMap> conditions, List<AutoMap> sorts, Page page, boolean lookupForeignKey) {
 		List<Map<String, Object>> list = select(clazz, conditions, sorts, page);
@@ -354,11 +357,32 @@ public class BaseDaoUtil {
 	public <T> Object getObjById(Class<T> clazz, int id) {
 		return getObjByField(clazz, Utils_dao.getIdField(clazz).getName(), id);
 	}
-	public <T> Object getObjById(Class<T> clazz, List<String> selectFields, int id) {
+	/**
+	 * 根据id查找对象
+	 * @param clazz
+	 * @param selectFields 自定义要查询的字段
+	 * @param id
+	 * @return
+	 * Nov 14, 2014 12:02:18 PM
+	 */
+	public <T> Object getObjById(Class<T> clazz, int id, List<String> selectFields) {
 		return getObjByField(clazz, Utils_dao.getIdField(clazz).getName(), id, selectFields);
 	}
 	public Object getObjById(Object obj) {
 		return getObjByField(obj, Utils_dao.getIdField(obj.getClass()).getName());
+	}
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param conditions 条件
+	 * @param selectFields 自定义要查询的字段
+	 * @return
+	 * Nov 14, 2014 1:20:15 PM
+	 */
+	public <T> Object getObj(Class<T> clazz, List<AutoMap> conditions, List<String> selectFields) {
+		return DataUtils.toJsonObject(DataUtils.listmap_getFirstMap(
+				select(clazz, selectFields, conditions, null, null, null, null)));
 	}
 	
 	/**
