@@ -5,29 +5,25 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 public final class DbUtil {
-	private static DbUtil DB = null;
+	private static DbUtil me = null;
 	private DbUtil() {}
 	
 	public static DbUtil getDB() {
-		if (DB == null) {
+		if (me == null) {
 			synchronized (DbUtil.class) {
-				if (DB == null) DB = new DbUtil();
+				if (me == null) me = new DbUtil();
 			}
 		}
-		return DB;
+		return me;
 	}
 	
 	public Connection getCon() {
 		Connection con = null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			com.mysql.jdbc.Driver.class.newInstance();
+//			Class.forName("com.mysql.jdbc.Driver");
 //			con = DriverManager.getConnection("jdbc:mysql://112.124.50.179:9110/fom", "bcdev", "@ppvii2014");
 //			con = DriverManager.getConnection("jdbc:mysql://112.124.50.179:9110/lala_authority", "bcdev", "@ppvii2014");
 //			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lala_statistics", "root", "");

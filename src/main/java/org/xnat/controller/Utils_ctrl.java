@@ -87,15 +87,14 @@ public final class Utils_ctrl {
 	 * @return
 	 * Oct 29, 2014 9:41:54 AM
 	 */
-	public static <T> Object populateBean(Class<T> clazz, HttpServletRequest req, String... fields) {
+	public static <T> T populateBean(Class<T> clazz, HttpServletRequest req, List<String> fields) {
 		T obj = null;
 		try {
 			obj = clazz.newInstance();
-			
 			Map<String, String[]> map = req.getParameterMap();
 			Iterator<String> it = map.keySet().iterator();
 			
-			if (fields == null || fields.length == 0) {
+			if (fields == null || fields.size() == 0) {
 				while (it.hasNext()) {
 					String key = it.next();
 					DataUtils.bean_setValueForField(obj, key, req.getParameter(key));
@@ -114,6 +113,11 @@ public final class Utils_ctrl {
 			e.printStackTrace();
 		}
 		return obj;
+	}
+	public static <T> T populateBean(Class<T> clazz, HttpServletRequest req, String... fields) {
+		List<String> params = new ArrayList<String>(fields.length);
+		for (String s : fields) params.add(s);
+		return populateBean(clazz, req, params);
 	}
 	/**
 	 * 获取会话, 并获取会话中的登录用户信息
