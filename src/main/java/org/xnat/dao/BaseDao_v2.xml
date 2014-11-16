@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.xnat.dao.BaseDao_v2">
+	<!-- 
+	<cache></cache>
+	-->
 	<!-- 新增v1-->
 	<insert id="insert">
+		<!-- 
+		<bind name="" value=""/>
+		 -->
 		INSERT INTO `${dbName}`.`${tableName}`
 		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
 			`${item.key}`
@@ -108,7 +114,6 @@
 		${sql}
 	</select>
 	
-	
 	<!-- 删除_v１-->
 	<delete id="delete">
 		DELETE FROM `${dbName}`.`${tableName}`
@@ -125,7 +130,9 @@
 		DELETE FROM `${dbName}`.`${tableName}`
 		<if test="conditionSql != null">${conditionSql}</if>
 	</delete>
+	<!-- 批量删除 -->
 	
+	<!-- ... -->
 	
 	<!-- 更新_v1-->
 	<update id="update_v1">

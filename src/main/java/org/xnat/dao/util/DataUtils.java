@@ -25,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 /**
  * 常见结构 map bean xml jsonObject(alias: jo) autoMap(有符号的map)
  * 	jsonArray(alias: ja) list list<Object>(alias: listbean) list<Map<String, Object>>(alias: listmap)
+ * 	(list<AutoMap>)listAutomap
  * 	可以用类大打造任意数据结构
  * 此类提供 
  * 		数据类型转换: 方法名都以 "to"开头
@@ -92,6 +93,7 @@ public final class DataUtils {
 		JsonObject jo = new JsonObject();
 		try {
 			for (Field field: javaBean.getClass().getDeclaredFields()) {
+				field.setAccessible(true);
 				if (field.get(javaBean) != null) jo.addProperty(field.getName(), field.get(javaBean).toString());
 			}
 		} catch (Exception e) {
@@ -113,6 +115,7 @@ public final class DataUtils {
 	public static void toMapByInject(Object bean, Map<String, Object> map) {
 		try {
 			for (Field f : bean.getClass().getDeclaredFields()) {
+				f.setAccessible(true);
 				if (f.get(bean) != null) map.put(f.getName(), f.get(bean));
 			}
 		} catch (Exception e) {
@@ -129,6 +132,7 @@ public final class DataUtils {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			for (Field f : bean.getClass().getDeclaredFields()) {
+				f.setAccessible(true);
 				if (f.get(bean) != null) map.put(f.getName(), f.get(bean));
 			}
 		} catch (Exception e) {
@@ -271,6 +275,7 @@ public final class DataUtils {
 		return list;
 	}
 	
+	
 	/**
 	 * ======================================================================================
 	 * 操作专区
@@ -282,8 +287,7 @@ public final class DataUtils {
 	 * @return
 	 */
 	public static Map<String, Object> listmap_getFirstMap(List<Map<String, Object>> list) {
-		if (list.size() > 0) return list.get(0);
-		return null;
+		return list.size() > 0 ? list.get(0) : null;
 	}
 	
 	/**

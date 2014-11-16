@@ -53,31 +53,15 @@ public class AutoMap {
 	 * @return
 	 */
 	public static List<AutoMap> configSelf(Object obj) {
-		List<AutoMap> maps = new ArrayList<AutoMap>();
-		try {
-			for (Field field : obj.getClass().getDeclaredFields()) {
-				Column col = field.getAnnotation(Column.class);
-				if (col == null) continue;
-				field.setAccessible(true);
-				if (field.get(obj) != null) {
-					maps.add(new AutoMap(field.getName(), "=", field.get(obj)));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return maps;
+		return configSelf(obj, "=");
 	}
 	public static List<AutoMap> configSelf(Object obj, String operator) {
 		List<AutoMap> maps = new ArrayList<AutoMap>();
 		try {
 			for (Field field : obj.getClass().getDeclaredFields()) {
-				Column col = field.getAnnotation(Column.class);
-				if (col == null) continue;
+				if (field.getAnnotation(Column.class) == null) continue;
 				field.setAccessible(true);
-				if (field.get(obj) != null) {
-					maps.add(new AutoMap(field.getName(), operator, field.get(obj)));
-				}
+				if (field.get(obj) != null) maps.add(new AutoMap(field.getName(), operator, field.get(obj)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

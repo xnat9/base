@@ -27,6 +27,19 @@ public class Person extends BaseEntity {
 	@Column
 	private String name;
 	
+	@Column
+	private Integer status;
+	
+	public enum Status {
+		DEL("被删除", 2);
+		public final String desc;
+		public final Integer value;
+		private Status(String desc, Integer value) {
+			this.desc = desc;
+			this.value = value;
+		}
+	}
+	
 	/**
 	 * 由bean的字段组成的一个类 方便 直接表达 此bean 的字段
 	 * @author xnat
@@ -36,6 +49,15 @@ public class Person extends BaseEntity {
 		public final static String id = "id";
 		public final static String age = "age";
 		public final static String name = "name";
+		public final static String status = "status";
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public Integer getId() {

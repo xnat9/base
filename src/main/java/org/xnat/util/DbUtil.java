@@ -22,8 +22,8 @@ public final class DbUtil {
 	public Connection getCon() {
 		Connection con = null;
 		try {
-			com.mysql.jdbc.Driver.class.newInstance();
-//			Class.forName("com.mysql.jdbc.Driver");
+//			com.mysql.jdbc.Driver.class.newInstance();
+			Class.forName("com.mysql.jdbc.Driver");
 //			con = DriverManager.getConnection("jdbc:mysql://112.124.50.179:9110/fom", "bcdev", "@ppvii2014");
 //			con = DriverManager.getConnection("jdbc:mysql://112.124.50.179:9110/lala_authority", "bcdev", "@ppvii2014");
 //			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lala_statistics", "root", "");

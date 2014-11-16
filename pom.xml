@@ -85,7 +85,9 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-jdbc.version}</version>
+			<!-- 
 			<scope>runtime</scope>
+			 -->
 		</dependency>
 
 		<!-- 处理 html的库 -->
@@ -426,8 +428,9 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<!-- 
 			<scope>test</scope>
-			<!-- -->
+			-->
 		</dependency>
 
 		<!-- <dependency> <groupId>org.xnat</groupId> <artifactId>xnat-base</artifactId> 

@@ -18,7 +18,7 @@ import org.xnat.util.Utils;
 
 
 /**
- * dao 层通用　用的是　BaseDao
+ * dao 层通用　用的是　BaseDao(第一版)
  * @author xnat
  * Nov 1, 2014 2:50:21 PM
  */

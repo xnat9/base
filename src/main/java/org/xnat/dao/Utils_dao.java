@@ -2,7 +2,9 @@ package org.xnat.dao;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -16,6 +18,8 @@ import org.xnat.dao.annotation.Entity;
  */
 public final class Utils_dao {
 	private Utils_dao() {}
+	//缓存实体属性(表字段)
+	private final static Map<String, List<String>> cache_fields = new HashMap<String, List<String>>(); 
 	
 	/**
 	 * pojo 获取所有字段
@@ -23,13 +27,16 @@ public final class Utils_dao {
 	 * @return List<String>
 	 */
 	public static <T> List<String> getAllFields(Class<T> clazz) {
-		List<String> fields = new ArrayList<String>();
+		List<String> fields = cache_fields.get(clazz.getName());
+		if (fields != null) return fields;
+		fields = new ArrayList<String>();
 		Field[] fs = clazz.getDeclaredFields();
 		for (int i=0; i<fs.length; i++) {
 			Column col = fs[i].getAnnotation(Column.class);
 			if (col == null) continue;
 			fields.add(fs[i].getName());
 		}
+		cache_fields.put(clazz.getName(), fields);
 		return fields;
 	}
 	/**

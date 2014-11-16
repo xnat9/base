@@ -5,21 +5,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.object.MappingSqlQuery;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.xnat.entity.BaseEntity;
 import org.xnat.entity.Person;
 import org.xnat.util.DbUtil;
 
-import com.google.gson.Gson;
-
 public class Test {
 	public static void main(String[] args) {
-		BaseEntity p = new Gson().fromJson("", Person.class);
+		Person p = new Person();
+//		Person.Status.DEL.value = 1;
+//		Person.Status.DEL.desc = "sdf";
+		p.setStatus(Person.Status.DEL.value);
+		System.out.println(Person.Status.DEL.value);
 //		MappingSqlQuery<T>
 //		AuthenticationManager
 //		AccessDecisionManager
+	}
+	
+	@org.junit.Test
+	public void publicTest() {
+		Person p = new Person();
+		p.setStatus(Person.Status.DEL.value);
+		System.out.println(Person.Status.DEL.value);
 	}
 	/**
 	 * 临时为一个类的方法添加新的执行程序
@@ -57,23 +62,23 @@ public class Test {
 	 * 两表相同字段 resultset 都可以取到
 	 * Oct 24, 2014 11:43:23 AM
 	 */
-	@org.junit.Test
-	public void testTwoTableSameFieldResultsetHandler() {
-		Connection con = DbUtil.getDB().getCon();
-		String sql = "select t1.email, t2.email from user t1, user_account t2 where t1.uid=t2.uid limit 5";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement(sql);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-//				Array arr = rs.getArray("email");
-				System.out.println(rs.getString(1)+" : "+rs.getString(2));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.getDB().close(rs, ps, con);
-		}
-	}
+//	@org.junit.Test
+//	public void testTwoTableSameFieldResultsetHandler() {
+//		Connection con = DbUtil.getDB().getCon();
+//		String sql = "select t1.email, t2.email from user t1, user_account t2 where t1.uid=t2.uid limit 5";
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
+//		try {
+//			ps = con.prepareStatement(sql);
+//			rs = ps.executeQuery();
+//			while (rs.next()) {
+////				Array arr = rs.getArray("email");
+//				System.out.println(rs.getString(1)+" : "+rs.getString(2));
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			DbUtil.getDB().close(rs, ps, con);
+//		}
+//	}
 }
