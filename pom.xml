@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.xnat</groupId>
-	<artifactId>xnat-base</artifactId>
-	<version>0.0.2</version>
-
-	<name>xnat-base</name>
+	<groupId>org.xnat.base</groupId>
+	<artifactId>base</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1</version>
+	<name>base Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	<!-- -->
+
 
 	<description>
   	人个base可重用库
@@ -29,6 +29,7 @@
 	==============================================
 	设计了basedao的第二版本, 主要添加了sql语句的dbName选项
   </description>
+
 
 	<build>
 		<plugins>
@@ -86,8 +87,8 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-jdbc.version}</version>
 			<!-- 
-			<scope>runtime</scope>
-			 -->
+			-->
+			<scope>runtime</scope> 
 		</dependency>
 
 		<!-- 处理 html的库 -->
@@ -429,12 +430,14 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<!-- 
-			<scope>test</scope>
 			-->
+			<scope>test</scope> 
 		</dependency>
 
 		<!-- <dependency> <groupId>org.xnat</groupId> <artifactId>xnat-base</artifactId> 
 			<version>0.0.1</version> <scope>system</scope> <systemPath>/home/xnat/.m2/repository/org/xnat/xnat-base/0.0.1/xnat-base-0.0.1.jar</systemPath> 
 			</dependency> -->
 	</dependencies>
+
+
 </project>
