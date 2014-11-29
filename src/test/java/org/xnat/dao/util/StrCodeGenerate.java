@@ -94,6 +94,26 @@ public class StrCodeGenerate {
 	}
 	
 	/**
+	 * 为实体产生tostring 方法
+	 */
+	@Test
+	public void generateEntityTostringMethod() {
+		Class clazz = Person.class;
+		StringBuilder sb = new StringBuilder();
+		sb.append("@Override\n");
+		sb.append("public String toString() {\n");
+		sb.append("\treturn \"[\"+");
+		for (Field f :clazz.getDeclaredFields()) {
+			Column col = f.getAnnotation(Column.class);
+			if (col == null) continue;
+			sb.append("\""+f.getName()+"=\"+this."+f.getName()+"+\"; \"+");
+		};
+		sb.delete(sb.length()-6, sb.length()).append("+\"]\";");
+		sb.append("\n}");
+		System.out.println(sb.toString());
+	}
+	
+	/**
 	 * 产生　entity 的 private column 字段　字符串
 	 * 
 	 * Oct 30, 2014 1:41:15 PM

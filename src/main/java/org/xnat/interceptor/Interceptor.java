@@ -17,14 +17,14 @@ public class Interceptor extends HandlerInterceptorAdapter {
 		request.setCharacterEncoding("utf8");
 		String path = request.getServletPath();
 		if ("/admin/login.do".equals(path)) return true;
-		Object m_user = WebUtils.getSessionAttribute(request, "m_user");
-		if (m_user == null) {
-			JsonObject jo = new JsonObject();
-			jo.addProperty("success", false);
-			jo.addProperty("msg", "会话失效, 请重新登录!");
-			response.addHeader("sessionstatus", "0");     
-			return false;
-		}
+//		Object m_user = WebUtils.getSessionAttribute(request, "m_user");
+//		if (m_user == null) {
+//			JsonObject jo = new JsonObject();
+//			jo.addProperty("success", false);
+//			jo.addProperty("msg", "会话失效, 请重新登录!");
+//			response.addHeader("sessionstatus", "0");     
+//			return false;
+//		}
 		return super.preHandle(request, response, handler);
 	}
 	

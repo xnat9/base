@@ -11,7 +11,7 @@ import org.xnat.dao.annotation.Entity;
  * @author xnat
  * Oct 21, 2014 10:45:38 AM
  */
-@Table(name="person", schema="tableName")
+@Table(name="person", catalog="dbname")
 //@Entity(tableName=Person.tabName)
 //@Table(name="person", catalog="d1") // name=表名, catalog=数据库名 use entity
 public class Person extends BaseEntity {
@@ -27,11 +27,20 @@ public class Person extends BaseEntity {
 	@Column
 	private String name;
 	
+	
+	public Person() {}
+	public Person(Integer id, Integer age, String name, Integer status) {
+		this.id = id;
+		this.age = age;
+		this.name = name;
+		this.status = status;
+	}
+
 	@Column
 	private Integer status;
 	
 	public enum Status {
-		DEL("被删除", 2);
+		ABLE("可用", 1),DEL("被删除", 2);
 		public final String desc;
 		public final Integer value;
 		private Status(String desc, Integer value) {
@@ -52,6 +61,12 @@ public class Person extends BaseEntity {
 		public final static String status = "status";
 	}
 
+	
+	@Override
+	public String toString() {
+		return "["+"id="+this.id+"; "+"age="+this.age+"; "+"name="+this.name+"; "+"status="+this.status+"]";
+	}
+	
 	public Integer getStatus() {
 		return status;
 	}

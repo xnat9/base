@@ -5,11 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.xnat.dao.DataSourceContextHolder;
-
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Deprecated
 public @interface Entity {
 	public String tableName();
-	public String dataSourceId() default DataSourceContextHolder.DATASOURCE1;
+	public String dataSourceId();
 }

@@ -1,0 +1,17 @@
+* { margin:　0; padding: 0; }
+
+a {
+	display: block; width: 120px; background-color: #98bf21;
+}
+.news {
+  background-color: gray;
+  border: solid 1px black;
+  }
+
+.news img {
+  float: left;
+  }
+	
+.news p {
+  float: right;
+  }

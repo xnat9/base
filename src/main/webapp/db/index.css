@@ -1,0 +1,7 @@
+* { padding: 0; margin: 0 }
+
+body {  }
+
+header { text-align: center }
+header form {  }
+header form textarea { width: 200px; height: 100px; }

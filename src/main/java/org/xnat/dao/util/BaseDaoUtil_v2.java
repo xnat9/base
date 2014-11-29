@@ -10,6 +10,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xnat.dao.BaseDao_v2;
+import org.xnat.dao.DataSourceContextHolder;
+import org.xnat.dao.DynamicDataSource;
 import org.xnat.dao.Utils_dao;
 import org.xnat.dao.annotation.ForeignKey;
 import org.xnat.util.Utils;
@@ -19,7 +21,7 @@ import org.xnat.util.Utils;
  * dao 层通用　用的是　BaseDao_v2(第二版)
  * 主要解决getObj...等方法时,做了一些不必要的数据转换(从数据库中获取的数据结构为listmap)
  * 条件分为两种: 
- * 		List<AutoMap> conditions(如果条件不为in, or等时推荐使用, 使用的是preperedStatement)
+ * 		List<AutoMap> conditions(如果条件不为in, or, is null等时推荐使用, 使用的是preperedStatement)
  * 		String conditionSql: 条件字符串　格式:　"where+条件(如:　in/or ...)(如果条件为in, or等时推荐使用, 使用的是statement)
  * 多数new list 都可以在初始化时确定大小
  * @author xnat
@@ -30,13 +32,17 @@ public class BaseDaoUtil_v2 {
 	@Autowired
 	private BaseDao_v2 baseDao_v2;
 	
+	//动态数据源
+//	@Autowired
+//	private DynamicDataSource dynamicDataSource;
+	
 	/**
 	 * 切换数据源(保留)
 	 * @param clazz
 	 * Oct 16, 2014 4:19:27 PM
 	 */
 	public static <T> void setDataSource(Class<T> clazz) {
-		
+//		DataSourceContextHolder.DATASOURCE1
 	}
 	/**
 	 * sql insert区

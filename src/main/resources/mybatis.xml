@@ -9,7 +9,7 @@
 		<mappers>
 		<!-- 
 		 -->
-		 	<mapper resource="com/bigchance/lala/ms/dao/mapper1/BaseDao.xml"/>
+		 	<mapper resource="org/xnat/dao/BaseDao.xml"/>
 		</mappers>
 	</configuration>
 	

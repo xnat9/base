@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd ">
+    
+     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="locations">  
+            <value>classpath:config.properties</value>  
+        </property>  
+    </bean>
+      <!--启用AOP支持 -->
+    <aop:aspectj-autoproxy/>
+    <mvc:interceptors>  
+        <mvc:interceptor>  
+            <!-- 必须要这么写 不然拦截不了 -->
+            <mvc:mapping path="/*.do"/>  
+			<mvc:mapping path="/*/*.do" /> 
+            <bean class="org.xnat.interceptor.Interceptor" />  
+        </mvc:interceptor>  
+    </mvc:interceptors>  
+    <!--注解支持-->
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="org.xnat"/>
+
+	<!-- guzz 配置 -->
+	<!-- 
+	<bean id="guzzContext" class="org.guzz.web.context.spring.GuzzContextBeanFactory" factory-method="createGuzzContext">
+    	<constructor-arg><value>classpath:guzz.xml</value></constructor-arg>
+	</bean>
+	<bean class="org.guzz.dao.GuzzBaseDao">
+     	<property name="guzzContext" ref="guzzContext" />
+	</bean>
+	<bean id="guzz_transactionManager" class="org.guzz.web.context.spring.GuzzTransactionManager">  
+        <property name="guzzContext" ref="guzzContext" />
+	</bean>
+	<tx:annotation-driven transaction-manager="guzz_transactionManager" />
+	-->
+	
+	
+	<!-- 数据源1 -->
+	<bean id="dataSource1" class="org.apache.commons.dbcp.BasicDataSource">
+		<!--
+		org.apache.commons.dbcp.BasicDataSource
+		com.mchange.v2.c3p0.ComboPooledDataSource
+		org.springframework.jdbc.datasource.DriverManagerDataSource
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@172.16.150.67:1521:orcl"></property>
+		<property name="url" value="jdbc:mysql://112.124.50.179:9110/laladb"></property>
+		-->
+		<property name="password" value="${dataSource.password}"></property>
+		
+		<!-- spring dataSource Mangager 
+		<property name="username" value="${dataSource.username}"></property>
+		<property name="url" value="${dataSource.url}"></property>
+		<property name="driverClassName" value="${dataSource.driver}"></property>
+		-->
+		
+		<!-- Connection Pooling DBCP
+		 -->
+		<property name="username" value="${dataSource1.username}"></property>
+		<property name="driverClassName" value="${dataSource1.driver}"></property>
+		<property name="url" value="${dataSource.url}{dataSource1.ip}:{dataSource1.port}"></property>
+		<property name="initialSize" value="5" />
+		<property name="maxActive" value="10" />
+		<property name="maxIdle" value="2" />
+		<property name="maxWait" value="1000" />
+		<property name= "testOnBorrow" value="true" />  
+        <property name= "testOnReturn" value="false" />  
+        <property name= "validationQuery" value="select 1" /> 
+        <property name="removeAbandoned" value="true"/> 
+        <property name= "testWhileIdle" value="false" /> 
+		 <!-- c3p0 pool
+		 <property name="user" value="${dataSource.username}"></property>
+ 		<property name="jdbcUrl" value="${dataSource.url}"></property>
+ 		<property name="driverClass" value="${dataSource2.driver}"></property>
+		 <property name="initialPoolSize" value="5"/>
+		 <property name="maxPoolSize" value="10"/>
+		 <property name="minPoolSize" value="2"/>
+		 <property name="acquireIncrement" value="2"/>
+		 <property name="maxIdleTime" value="1800"/>
+		 <property name="acquireRetryAttempts" value="30" />  
+		  -->
+	</bean>
+	
+	<!-- 动态数据源 -->
+	<bean id="dynamicDataSource" class="com.bigchance.lala.ms.dao.DynamicDataSource">
+		<property name="targetDataSources">  
+	        <map key-type="java.lang.String">  
+	            <entry value-ref="dataSource1" key="${dataSource1.id}"></entry>  
+	        </map>
+	    </property>  
+	    <property name="defaultTargetDataSource" ref="dataSource1"></property> 
+	</bean>
+	
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+		<property name="dataSource" ref="dynamicDataSource" />
+		<property name="configLocation" value="classpath:mybatis.xml"/>
+	  <!--  
+  		<property name="mapperLocations">
+  			<list>
+  				<value>
+  				classpath:com/bigchance/lala/ms/dao/baseDao.xml
+  				classpath:com/bigchance/lala/ms/dao/reportProcess.xml
+  				classpath:com/bigchance/lala/ms/dao/interestTags.xml
+  				classpath:com/bigchance/lala/ms/dao/publicInfo.xml
+  				classpath:com/bigchance/lala/ms/dao/userInfo.xml
+  				</value>
+  			</list>
+  		</property>
+  		-->
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
+		<property name="basePackage" value="org.xnat.dao" />
+	</bean>
+	<!-- 
+	<bean id="sessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean" >
+		<property name="dataSource" ref="dataSource2" />
+		<property name="configLocation" value="classpath:mybatis_mapper2.xml"/>
+	</bean>
+	<bean id="sqlSessionTemplate1" class="org.mybatis.spring.SqlSessionTemplate">
+    	<constructor-arg index="0" ref="sessionFactory1"/>
+	</bean>
+	<bean id="sqlSessionTemplate2" class="org.mybatis.spring.SqlSessionTemplate">
+    	<constructor-arg index="0" ref="sessionFactory2"/>
+	</bean>
+    <bean id="sqlSessionTemplate" class="com.bigchance.lala.ms.dao.CustomSqlSessionTemplate">
+        <constructor-arg ref="sessionFactory1" />
+        <property name="targetSqlSessionFactorys">
+            <map>     
+                <entry value-ref="sessionFactory1" key="db1"/>
+                <entry value-ref="sessionFactory2" key="db2"/>
+            </map> 
+        </property>
+    </bean>
+	 -->
+	<!-- 
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate2"/>
+		<property name="basePackage" value="com.bigchance.lala.ms.dao.mapper2" />
+	</bean>
+	<bean id="baseDao" class="com.bigchance.lala.ms.dao.BaseDao">
+        <property name="sqlSessionFactory" ref="sessionFactory1"></property>
+    </bean>
+	 -->
+	<bean id="transactionManager1" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource1" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager1" />
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	
+	<!-- 任务调度配置 --> 
+	<bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">  
+	 <property name="corePoolSize" value="10" />  
+	 <property name="maxPoolSize" value="100" />  
+	 <property name="queueCapacity" value="500" />  
+	</bean>
+	<!-- job -->
+	<bean id="countDailyJob" class="com.bigchance.lala.ms.quartz.job.CountDailyJob" />
+	<!-- jobDetail -->
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+	 <property name="targetObject" ref="countDailyJob" />  
+	 <property name="targetMethod" value="execute" />  
+	</bean>
+	<!-- trigger -->
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+	 <property name="jobDetail" ref="jobDetail" />  
+	 <property name="cronExpression" value="0 0 */6 * * ?" />  
+	</bean>
+	<!-- scheduler -->
+	<bean lazy-init="true" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+	 <property name="triggers">  
+	  <list>  
+	   <ref bean="cronTrigger" />  
+	  </list>  
+	 </property>  
+	 <property name="taskExecutor" ref="threadPoolTaskExecutor" />  
+	</bean>
+</beans>
