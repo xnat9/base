@@ -9,7 +9,7 @@ import java.util.Date;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * 常用工具类
+ * 公共常用工具类
  * @author xnat
  * Oct 6, 2014 9:58:10 AM
  */

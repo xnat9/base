@@ -5,8 +5,8 @@ package org.xnat.dao.util;
  * @author xnat
  * Oct 21, 2014 10:04:33 PM
  */
-public final class DaoConstant {
-	private DaoConstant() {}
+public final class Const_dao {
+	private Const_dao() {}
 	
 	public static final String EQUALS = "=" ;
 	public static final String BIGGER = ">" ;
