@@ -78,7 +78,7 @@ public class StrCodeGenerate {
 	@Test
 	public void generateBeanFieldsClass() {
 		Class clazz = Person.class;
-		String classStr = "public static final class Fields {\n";
+		String classStr = "public static final class Cols {\n";
 		String fieldStr = "\tpublic final static String ";
 		StringBuilder sb = new StringBuilder();
 		sb.append(classStr);

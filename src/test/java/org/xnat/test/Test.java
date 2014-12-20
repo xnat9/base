@@ -1,41 +1,94 @@
 package org.xnat.test;
 
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.text.DefaultEditorKit.CutAction;
 
+import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.WordUtils;
+import org.apache.ibatis.annotations.Param;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.xnat.entity.Person;
+import org.xnat.util.DataUtils;
 import org.xnat.util.DbUtil;
 
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import com.google.common.base.Predicate;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.jfinal.core.ActionKey;
 
 public class Test {
-	public static void main(String[] args) {
-		Map<String, String> map = ImmutableMap.of("k1", "v1", "k2", "v2");
-		HashBasedTable<Integer, String, Object> persons = HashBasedTable.create();
-		persons.put(1, Person.Fields.id, 1);
-		persons.put(1, Person.Fields.age, 20);
-		persons.put(1, Person.Fields.name, "name1");
-		persons.put(1, Person.Fields.status, Person.Status.ABLE.value);
-		
-		System.out.println(persons);
-		Lists.newArrayList();
-//		Sets.newHashSet(elements)
-//		Maps.newHashMap();
-//		JdbcTemplate
-//		AuthenticationManager
-//		AccessDecisionManager
+	public static void main(String[] args) throws Exception {
+		String s = WordUtils.wrap("我靠居然中文不行，那怎么办呢？", 10);
+		System.out.println("("+s+")");
+	}
+	@org.junit.Test
+	public void testVarInParentAndSubClass() {
+		class Parent {
+			int i;
+			public Parent() {
+				i = 100;
+			}
+		}
+		class SubClass {
+			int i;
+			public SubClass() {
+				super();
+				i = 200;
+			}
+		}
+		SubClass subClass = new SubClass();
+		System.out.println(subClass.i);
 	}
 	
+	
+	@org.junit.Test
+	public void testGuavaFunction() {
+		@SuppressWarnings("serial")
+		Map<String, Integer> map = new HashMap<String, Integer>() {
+			{
+				put("k1", 1);
+				put("k2", 2);
+			}
+		};
+		System.out.println(map.get("k1"));
+		Function<String, Integer> fn = Functions.forMap(map);
+		System.out.println(fn.apply("k2"));
+		
+		Function<Integer, Integer> fn1 = new Function<Integer, Integer>() {
+//			String name = "名字";
+//			@Override
+//			public String apply(Date input) {
+//				return name;
+//			}
+			@Override
+			public Integer apply(Integer in) {
+				return in * in;
+			}
+		};
+		Function<String, Integer> result = Functions.compose(fn1, fn);
+		System.out.println(result.apply("k1"));
+//		System.out.println(result.apply("key"));
+	}
 	@org.junit.Test
 	public void publicTest() {
 		Person p = new Person();

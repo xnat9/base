@@ -54,11 +54,12 @@ public class Person extends BaseEntity {
 	 * @author xnat
 	 * Oct 18, 2014 2:55:00 PM
 	 */
-	public static final class Fields {
+	public static final class Cols {
 		public final static String id = "id";
 		public final static String age = "age";
 		public final static String name = "name";
 		public final static String status = "status";
+		
 	}
 
 	

@@ -1,4 +1,4 @@
-package org.xnat.dao.util;
+package org.xnat.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -14,6 +14,8 @@ import java.util.Set;
 import org.apache.commons.beanutils.BeanUtils;
 import org.json.JSONObject;
 import org.json.XML;
+import org.xnat.dao.util.Order;
+import org.xnat.dao.util.Page;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -36,9 +38,7 @@ import com.google.gson.reflect.TypeToken;
 public final class DataUtils {
 	public final static Gson gson = new Gson(); 
 	public final static JsonParser jsonParser = new JsonParser(); 
-	static {
-		
-	}
+//	static {}
 	private DataUtils() {}
 	/**
 	 * 转换专区

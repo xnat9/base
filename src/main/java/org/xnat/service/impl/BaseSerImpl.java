@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xnat.dao.Utils_dao;
 import org.xnat.dao.util.BaseDaoUtil;
-import org.xnat.dao.util.DataUtils;
 import org.xnat.service.BaseService;
+import org.xnat.util.DataUtils;
 
 import com.google.gson.JsonObject;
 

@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.xnat.dao.util.AutoMap;
-import org.xnat.dao.util.DataUtils;
 import org.xnat.entity.Person;
+import org.xnat.util.DataUtils;
 
 import com.google.gson.JsonObject;
 

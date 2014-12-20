@@ -28,6 +28,25 @@ import org.xnat.service.BaseService;
 
 import com.google.gson.JsonObject;
 
+/**
+设计原则: 路径互斥, 简单明了, 既可复杂又可简单
+设计: http://localhost:8080/[{prefix(路径标识)}](中括号表示可选)/{tableName}/{pkId}/{add.do/del.do/get.do/update.do}
+	http://localhost:8080/{prefix}/{tableName}/key/value/{add.do/del.do/get.do/update.do}
+	get.do: params: {
+			selectFields(要获得哪些字段, 默认为全部): [],
+			conditions(条件(支持and--并列条件), 默认为分页查询--page参数): [
+					{ key: k1, denotation(默认为"="): ">", value: 3 }, 
+					{}],
+			page: { page(默认第1页): 1, limit(每页显示多少个, 默认50): 10, start(从第几个开始, 默认为0): 0 }
+		}
+		result: { 
+			success(默认为true): true,
+			status: 200,
+			serSay(服务器说): { tip: "", warn: "", err: "" } 
+		}
+
+ * @author xnat
+ */
 @Controller
 @RequestMapping("common")
 public class CommonCtrl {

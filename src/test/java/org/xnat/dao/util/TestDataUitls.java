@@ -8,6 +8,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xnat.entity.Person;
+import org.xnat.util.DataUtils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -19,7 +20,7 @@ public class TestDataUitls {
 	public void testBean_setValueForField() {
 		Person p = new Person();
 		String name = "sssssssssssssssss";
-		DataUtils.bean_setValueForField(p, Person.Fields.name, name);
+		DataUtils.bean_setValueForField(p, Person.Cols.name, name);
 		Assert.assertArrayEquals("相等", new String[]{name}, new String[]{p.getName()});
 	}
 	
@@ -27,7 +28,7 @@ public class TestDataUitls {
 	public void testBean_getFieldValue() {
 		Person p = new Person();
 		p.setName("test");
-		Object v = DataUtils.bean_getFieldValue(p, Person.Fields.name);
+		Object v = DataUtils.bean_getFieldValue(p, Person.Cols.name);
 		System.out.println(v);
 	}
 	

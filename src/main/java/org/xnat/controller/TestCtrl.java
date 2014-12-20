@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xnat.dao.DynamicDataSource;
 
+/**
+ * @author xnat
+ */
+//@Path("test")
 @Controller
 @RequestMapping("test")
 public class TestCtrl {
@@ -30,6 +35,13 @@ public class TestCtrl {
 	}
 	@RequestMapping("m1")
 	public void m1(HttpServletResponse resp) throws SQLException, IOException {
+		Connection con = dynamicDataSource.getConnection();
+		System.out.println(con == null);
+		System.out.println(con.getCatalog()+" ================================");
+//		resp.getWriter().write(schema);
+	}
+	@RequestMapping("m3")
+	public void m3(HttpServletResponse resp) throws SQLException, IOException {
 		Connection con = dynamicDataSource.getConnection();
 		System.out.println(con == null);
 		System.out.println(con.getCatalog()+" ================================");
