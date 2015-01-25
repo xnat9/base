@@ -1,0 +1,18 @@
+package org.xnat.jdbc.sql;
+
+import java.util.List;
+
+class CSql extends CURDSql implements PreparedSql {
+
+	@Override
+	public List<Object> getValues() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String build() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

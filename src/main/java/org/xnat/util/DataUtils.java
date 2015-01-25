@@ -14,8 +14,9 @@ import java.util.Set;
 import org.apache.commons.beanutils.BeanUtils;
 import org.json.JSONObject;
 import org.json.XML;
-import org.xnat.dao.util.Order;
+import org.xnat.dao.util.Dir;
 import org.xnat.dao.util.Page;
+import org.xnat.jdbc.term.Order;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -393,7 +394,7 @@ public final class DataUtils {
 			public int compare(JsonObject o1, JsonObject o2) {
 				String i = o1.get(fieldName).getAsString();
 				String j = o2.get(fieldName).getAsString();
-				if (null == order || Order.DESC.name().equalsIgnoreCase(order)) return j.compareTo(i);
+				if (null == order || Dir.DESC.name().equalsIgnoreCase(order)) return j.compareTo(i);
 				else return i.compareTo(j);
 			}
 		});

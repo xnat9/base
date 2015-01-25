@@ -81,6 +81,23 @@
 	</properties>
 
 	<dependencies>
+	<!-- google guice mvc框架 -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.0-beta5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-mvc</artifactId>
+			<version>2.15</version>
+		</dependency>
+
+		<!-- hbase <dependency> <groupId>org.apache.hbase</groupId> <artifactId>hbase</artifactId> 
+			<version>0.99.2</version> </dependency> -->
+		<!-- tomcat 依赖 <dependency> <groupId>org.apache.tomcat</groupId> <artifactId>tomcat-catalina</artifactId> 
+			<version>8.0.15</version> </dependency> -->
 		<!-- 缓存 encache <dependency> <groupId>net.sf.ehcache</groupId> <artifactId>ehcache</artifactId> 
 			<version>2.9.0</version> </dependency> -->
 		<!-- lucene <dependency> <groupId>org.apache.lucene</groupId> <artifactId>lucene-core</artifactId> 
@@ -113,7 +130,21 @@
 		</dependency>
 		<!-- c3p0 <dependency> <groupId>c3p0</groupId> <artifactId>c3p0</artifactId> 
 			<version>0.9.1.2</version> </dependency> -->
+
+
+		<!-- hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.1.3.Final</version>
+		</dependency>
+
 		<!--appache commons -->
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.4.1</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
@@ -215,36 +246,27 @@
 			<version>1.0</version>
 		</dependency>
 		<!-- Spring依赖关系 -->
-		
+
 		<!-- <dependency> <groupId>asm</groupId> <artifactId>asm</artifactId> <version>3.3.1</version> 
 			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-asm</artifactId> 
 			<version>3.1.4.RELEASE</version> </dependency> -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>4.1.3.RELEASE</version>
-			<!-- <version>3.2.4.RELEASE</version> -->
-		</dependency>
+		<!-- spring-context 包含了core,aop -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
+			<version>4.1.4.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
+			<version>4.1.4.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
@@ -329,7 +351,6 @@
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
@@ -359,11 +380,8 @@
 
 		<!-- guzz dao <dependency> <groupId>org.guzz</groupId> <artifactId>guzz</artifactId> 
 			<version>1.3.1</version> </dependency> -->
-		<dependency>
-			<groupId>com.ibm.icu</groupId>
-			<artifactId>icu4j</artifactId>
-			<version>50.1.1</version>
-		</dependency>
+		<!-- <dependency> <groupId>com.ibm.icu</groupId> <artifactId>icu4j</artifactId> 
+			<version>50.1.1</version> </dependency> -->
 
 		<!-- J2EE相关依赖 -->
 		<dependency>
@@ -408,7 +426,6 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -417,27 +434,22 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- 计算一个对象在内在中的大小 -->
-		<dependency>
-			<groupId>com.carrotsearch</groupId>
-			<artifactId>java-sizeof</artifactId>
-			<version>0.0.4</version>
-		</dependency>
-
+		<!-- 计算一个对象在内在中的大小 <dependency> <groupId>com.carrotsearch</groupId> <artifactId>java-sizeof</artifactId> 
+			<version>0.0.4</version> </dependency> -->
 
 		<!-- <dependency> <groupId>org.xnat</groupId> <artifactId>xnat-base</artifactId> 
 			<version>0.0.1</version> <scope>system</scope> <systemPath>/home/xnat/.m2/repository/org/xnat/xnat-base/0.0.1/xnat-base-0.0.1.jar</systemPath> 
 			</dependency> -->
 
+
+
+		<!-- jfinal -->
+		<!-- <dependency> <groupId>com.jfinal</groupId> <artifactId>jfinal</artifactId> 
+			<version>1.9</version> </dependency> -->
 		<!-- 本地jar -->
-		<!-- -->
-		<dependency>
-			<groupId>com.jfinal</groupId>
-			<artifactId>jfinal</artifactId>
-			<version>1.9</version>
-			<scope>system</scope>
-			<systemPath>/media/store1/document/java/jfinal-1.9-all/jfinal-1.9-bin-with-src.jar</systemPath>
-		</dependency>
+		<!-- <dependency> <groupId>com.jfinal</groupId> <artifactId>jfinal</artifactId> 
+			<version>1.9</version> <scope>system</scope> <systemPath>/media/store1/document/java/jfinal-1.9-all/jfinal-1.9-bin-with-src.jar</systemPath> 
+			</dependency> -->
 	</dependencies>
 
 

@@ -1,17 +1,24 @@
 package org.xnat.entity;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.xnat.dao.annotation.Entity;
+import org.xnat.dao.util.Pairs;
+import org.xnat.entity.dao.Dao;
+import org.xnat.entity.dao.PersonDao;
+import org.xnat.jdbc.sql.Sql;
 
 /**
  * 设计的实体模板
  * @author xnat
  * Oct 21, 2014 10:45:38 AM
  */
-@Table(name="person", catalog="dbname")
+@Table(name=Person.tabName, catalog="dbname")
 //@Entity(tableName=Person.tabName)
 //@Table(name="person", catalog="d1") // name=表名, catalog=数据库名 use entity
 public class Person extends BaseEntity {
@@ -26,7 +33,8 @@ public class Person extends BaseEntity {
 	private Integer age;
 	@Column
 	private String name;
-	
+	@Column
+	private Integer status;
 	
 	public Person() {}
 	public Person(Integer id, Integer age, String name, Integer status) {
@@ -35,9 +43,6 @@ public class Person extends BaseEntity {
 		this.name = name;
 		this.status = status;
 	}
-
-	@Column
-	private Integer status;
 	
 	public enum Status {
 		ABLE("可用", 1),DEL("被删除", 2);
@@ -54,20 +59,45 @@ public class Person extends BaseEntity {
 	 * @author xnat
 	 * Oct 18, 2014 2:55:00 PM
 	 */
-	public static final class Cols {
+	public static final class Field {
 		public final static String id = "id";
 		public final static String age = "age";
 		public final static String name = "name";
 		public final static String status = "status";
 		
 	}
-
+	/**
+	 * 实体所有字段由逗号分割组成的字符串, select * 代替这个"*" 
+	 */
+	public static final String FIELDS = "id,age,name,status";
+	public static final int field_count = 4;
 	
-	@Override
-	public String toString() {
-		return "["+"id="+this.id+"; "+"age="+this.age+"; "+"name="+this.name+"; "+"status="+this.status+"]";
+	/**
+	 * 数据访问通道
+	 */
+	public static PersonDao dao = new PersonDao() {
+		public boolean exsit(String name, Integer age) {
+			System.out.println("ddddddd");
+			List<Record> list = getByField(new Pairs(2).add(Field.name, name).add(Field.age, age));
+			return list != null && list.size() > 0 ? true : false;
+		}
+//		public List<Record> getByField(List<String> fields, List<Object> values) {
+//			return null;
+//		};
+	};
+	
+	
+	/**=============validate 添加验证================**/
+	public boolean validate1() {
+		//if .... return false
+		return true;
+	}
+	public boolean validate2() {
+//		if ... return false
+		return true;
 	}
 	
+	/**================setter and getter=================**/
 	public Integer getStatus() {
 		return status;
 	}
@@ -100,4 +130,9 @@ public class Person extends BaseEntity {
 		this.name = name;
 	}
 	
+	/**==========================**/
+	@Override
+	public String toString() {
+		return "["+"id="+this.id+"; "+"age="+this.age+"; "+"name="+this.name+"; "+"status="+this.status+"]";
+	}
 }

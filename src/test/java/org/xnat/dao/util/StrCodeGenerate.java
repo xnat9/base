@@ -78,19 +78,21 @@ public class StrCodeGenerate {
 	@Test
 	public void generateBeanFieldsClass() {
 		Class clazz = Person.class;
-		String classStr = "public static final class Cols {\n";
+		String classStr = "public static final class Field {\n";
 		String fieldStr = "\tpublic final static String ";
 		StringBuilder sb = new StringBuilder();
+		StringBuilder fields = new StringBuilder();
 		sb.append(classStr);
-		
 		for (Field f :clazz.getDeclaredFields()) {
 			Column col = f.getAnnotation(Column.class);
 			if (col == null) continue;
 			sb.append(fieldStr);
 			sb.append(f.getName()+" = "+"\""+f.getName()+"\";\n");
+			fields.append(f.getName()+",");
 		};
 		sb.append("}");
 		System.out.println(sb.toString());
+		System.out.println(fields.toString());
 	}
 	
 	/**
