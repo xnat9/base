@@ -3,6 +3,7 @@ package org.xnat.test;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Test;
 import org.xnat.dal.sql.USql;
 import org.xnat.dal.term.Where;
 import org.xnat.entity.Person;
@@ -11,12 +12,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 
-public class Test {
+public class PublicTest {
 	public static void main(String[] args) throws Exception {
-		new USql().add("name", "xxb").where(Where.andEq("", ""));
 	}
 
-	@org.junit.Test
+	@Test
 	public void testVarInParentAndSubClass() {
 		class Parent {
 			int i;
@@ -37,7 +37,7 @@ public class Test {
 		System.out.println(subClass.i);
 	}
 
-	@org.junit.Test
+	@Test
 	public void testGuavaFunction() {
 		@SuppressWarnings("serial")
 		Map<String, Integer> map = new HashMap<String, Integer>() {
@@ -66,7 +66,7 @@ public class Test {
 		// System.out.println(result.apply("key"));
 	}
 
-	@org.junit.Test
+	@Test
 	public void publicTest() {
 		Person p = new Person();
 		p.setStatus(Person.Status.DEL.value);
@@ -78,7 +78,7 @@ public class Test {
 	 * 
 	 * Oct 30, 2014 9:41:51 PM
 	 */
-	@org.junit.Test
+	@Test
 	public void forObjAddTempFieldOrMethod() {
 		Thread th = new Thread() {
 			@Override
