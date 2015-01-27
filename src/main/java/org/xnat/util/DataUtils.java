@@ -16,7 +16,6 @@ import org.json.JSONObject;
 import org.json.XML;
 import org.xnat.dao.util.Dir;
 import org.xnat.dao.util.Page;
-import org.xnat.jdbc.term.Order;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

@@ -1,20 +1,20 @@
-package org.xnat.jdbc.sql;
+package org.xnat.dal.sql;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xnat.jdbc.exception.SqlBuildException;
-import org.xnat.jdbc.term.Term;
-import org.xnat.jdbc.term.Where;
+import org.xnat.dal.exception.SqlBuildException;
+import org.xnat.dal.term.Term;
+import org.xnat.dal.term.Where;
 
 /**
  * 
  * @author xnat
  */
-public class USql extends WhereSql implements PreparedSql {
+public class USql extends WhereSql {
 	private List<Term> sets;
 
-	public USql() { init(null, null, null);}
+	public USql() { init(null, null, null); }
 	public USql(String tabName) { init(tabName, null, null); }
 	public USql(String tabName, Where where) { init(tabName, null, where); }
 	public USql(String tabName, List<Term> sets, Where where) { init(tabName, sets, where); }

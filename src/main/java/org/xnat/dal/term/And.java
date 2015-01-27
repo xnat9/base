@@ -1,4 +1,4 @@
-package org.xnat.jdbc.term;
+package org.xnat.dal.term;
 
 /**
  * sql 中的 and 

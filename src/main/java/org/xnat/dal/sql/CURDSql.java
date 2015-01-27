@@ -1,4 +1,4 @@
-package org.xnat.jdbc.sql;
+package org.xnat.dal.sql;
 
 /**
  * 分为: 增删查改sql

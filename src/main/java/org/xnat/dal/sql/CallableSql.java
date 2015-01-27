@@ -1,4 +1,4 @@
-package org.xnat.jdbc.sql;
+package org.xnat.dal.sql;
 
 import java.util.List;
 
@@ -6,13 +6,7 @@ import java.util.List;
  * callable sql
  * @author xnat
  */
-public class CallableSql extends PreparedSql {
-
-	@Override
-	public String build() {
-		// TODO Auto-generated method stub
-		return getSql();
-	}
+public class CallableSql implements PreparedSql {
 
 	@Override
 	public List<Object> getValues() {

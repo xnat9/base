@@ -8,7 +8,6 @@
 	<name>base Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
-
 	<description>
   	人个base可重用库/测试库
   	
@@ -29,7 +28,6 @@
 	==============================================
 	设计了basedao的第二版本, 主要添加了sql语句的dbName选项
   </description>
-
 
 	<build>
 		<plugins>

@@ -1,4 +1,4 @@
-package org.xnat.jdbc.term;
+package org.xnat.dal.term;
 
 public class Or extends Connector {
 	//or 中的 and

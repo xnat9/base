@@ -1,4 +1,4 @@
-package org.xnat.jdbc.sql;
+package org.xnat.dal.sql;
 
 /**
  * 构建sql

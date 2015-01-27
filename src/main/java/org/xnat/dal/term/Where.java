@@ -1,9 +1,9 @@
-package org.xnat.jdbc.term;
+package org.xnat.dal.term;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xnat.jdbc.sql.Util_sql;
+import org.xnat.dal.sql.Util_sql;
 
 /**
  * 
@@ -66,19 +66,19 @@ public final class Where {
 	public And getAnd() {
 		return and;
 	}
-	public void setAnd(And and) {
-		this.and = and;
+	public Where setAnd(And and) {
+		this.and = and; return this;
 	}
 	public Or getOr() {
 		return or;
 	}
-	public void setOr(Or or) {
-		this.or = or;
+	public Where setOr(Or or) {
+		this.or = or; return this;
 	}
 	public In getIn() {
 		return in;
 	}
-	public void setIn(In in) {
-		this.in = in;
+	public Where setIn(In in) {
+		this.in = in; return this;
 	}
 }

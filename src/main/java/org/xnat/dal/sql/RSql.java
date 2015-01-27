@@ -1,26 +1,23 @@
-package org.xnat.jdbc.sql;
+package org.xnat.dal.sql;
 
 import java.util.List;
 
-import org.xnat.jdbc.term.Where;
+import org.xnat.dal.term.Where;
 
 /**
  * @see CSql,USql,DSql
  * @author xnat
  */
-public class RSql extends WhereSql implements PreparedSql {
+public class RSql extends WhereSql {
 	private boolean distinct = false; 
 	//要查询的字段
-	private List<String> selectFields;
+	private List<String> fieldsList;
+	private String fieldsStr;
 	
-	public RSql(String tabName) { init(tabName, null, null); }
-	public RSql(String tabName, List<String> selectFields) { init(tabName, selectFields, null); }
-	public RSql(String tabName, List<String> selectFields, Where where) { init(tabName, selectFields, where); }
+	public RSql() { init(); }
+	public RSql(String fieldsStr) { setFieldsStr(fieldsStr); init(); }
 	
-	private void init(String tabName, List<String> selectFields, Where where) {
-		setTabName(tabName);
-		setSelectFields(selectFields);
-		setWhere(where);
+	private void init() {
 		setCurd(CURD.SELECT);
 	}
 	
@@ -29,9 +26,15 @@ public class RSql extends WhereSql implements PreparedSql {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getCurd()+" ");
 		if (isDistinct()) sb.append(" DISTINCT ");
-		for (String s : selectFields) sb.append(s+",");
-		sb.deleteCharAt(sb.length()-1);
-		sb.append(getWhere());
+		if (getFieldsList() != null) {
+			for (String s : getFieldsList()) sb.append(s+",");
+			sb.deleteCharAt(sb.length()-1);
+		} else if (getFieldsStr() != null && !getFieldsStr().isEmpty()) {
+			sb.append(getFieldsStr());
+		} else {
+			sb.append("*");
+		}
+		sb.append(" "+getWhere());
 		
 		setSql(sb.toString()); setBuilded(true);
 		return getSql();
@@ -42,24 +45,32 @@ public class RSql extends WhereSql implements PreparedSql {
 		return getWhere().getValues();
 	}
 	
+
+	/**
+	 * setWhere的简写
+	 */
+	public RSql where(Where where) {
+		setWhere(where); return this;
+	}
+	
+	
 	/**=============getter and setter=============**/
-	public void setSelectFields(List<String> selectFields) {
-		this.selectFields = selectFields;
-	}
-	public List<String> getSelectFields() {
-		return selectFields;
-	}
 	public void setDistinct(boolean distinct) {
 		this.distinct = distinct;
 	}
 	public boolean isDistinct() {
 		return distinct;
 	}
-	
-	/**
-	 * setWhere的简写
-	 */
-	public RSql where(Where where) {
-		setWhere(where); return this;
+	public List<String> getFieldsList() {
+		return fieldsList;
+	}
+	public void setFieldsList(List<String> fieldsList) {
+		this.fieldsList = fieldsList;
+	}
+	public String getFieldsStr() {
+		return fieldsStr;
+	}
+	public void setFieldsStr(String fieldsStr) {
+		this.fieldsStr = fieldsStr;
 	}
 }

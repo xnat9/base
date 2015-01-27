@@ -1,4 +1,4 @@
-package org.xnat.jdbc.exception;
+package org.xnat.dal.exception;
 
 /**
  * sql构建时异常

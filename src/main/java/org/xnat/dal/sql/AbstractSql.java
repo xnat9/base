@@ -1,10 +1,10 @@
-package org.xnat.jdbc.sql;
+package org.xnat.dal.sql;
 
 /**
  * sql
  * @author xnat
  */
-abstract class AbstractSql implements BuildSql {
+abstract class AbstractSql implements BuildSql,PreparedSql {
 	//终极sql字符串
 	private String sql;
 	//mysql中是数据库名
@@ -21,7 +21,8 @@ abstract class AbstractSql implements BuildSql {
 	@Override
 	public String toString() {
 		//sql只构建一次
-		if (!isBuilded()) build();
+//		if (!isBuilded()) 
+//		build();
 		return getSql();
 	}
 	/**==============getter and setter=============**/

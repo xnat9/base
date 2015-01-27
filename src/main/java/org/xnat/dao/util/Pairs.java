@@ -15,11 +15,11 @@ public final class Pairs {
 		me = new ArrayList<Pair>(initCount);
 	}
 	public Pairs add(Pair p) {
-		me.add(p);
-		return this;
+		me.add(p); return this;
 	}
 	public Pairs add(String key, Object value) {
 		me.add(new Pair(key, value));
 		return this;
 	}
+	public List<Pair> getList() { return me; }
 }

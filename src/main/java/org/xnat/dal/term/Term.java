@@ -1,6 +1,6 @@
-package org.xnat.jdbc.term;
+package org.xnat.dal.term;
 
-import org.xnat.jdbc.exception.SqlBuildException;
+import org.xnat.dal.exception.SqlBuildException;
 
 /**
  * sql 语句 term 

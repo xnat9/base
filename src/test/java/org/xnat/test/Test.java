@@ -1,22 +1,14 @@
 package org.xnat.test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.xnat.dal.sql.USql;
+import org.xnat.dal.term.Where;
 import org.xnat.entity.Person;
-import org.xnat.jdbc.sql.CURD;
-import org.xnat.jdbc.sql.PreparedSql;
-import org.xnat.jdbc.sql.USql;
-import org.xnat.jdbc.term.And;
-import org.xnat.jdbc.term.Where;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.gson.Gson;
 
 
 public class Test {

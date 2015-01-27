@@ -1,17 +1,13 @@
 package org.xnat.entity;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.xnat.dao.util.Pairs;
-import org.xnat.entity.dao.Dao;
 import org.xnat.entity.dao.PersonDao;
-import org.xnat.jdbc.sql.Sql;
 
 /**
  * 设计的实体模板
@@ -75,15 +71,22 @@ public class Person extends BaseEntity {
 	/**
 	 * 数据访问通道
 	 */
-	public static PersonDao dao = new PersonDao() {
+	public static PersonDao dao = new PersonDao () {
+		/**
+		 * 用于配置. 
+		 */
+		private DaoConfig conf = new DaoConfig(tabName, Field.id, FIELDS);
+		@Override
+		public DaoConfig daoConf() { return conf; }
+		@Override
 		public boolean exsit(String name, Integer age) {
-			System.out.println("ddddddd");
 			List<Record> list = getByField(new Pairs(2).add(Field.name, name).add(Field.age, age));
 			return list != null && list.size() > 0 ? true : false;
 		}
 //		public List<Record> getByField(List<String> fields, List<Object> values) {
 //			return null;
 //		};
+
 	};
 	
 	

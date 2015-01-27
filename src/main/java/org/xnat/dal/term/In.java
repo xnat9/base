@@ -1,4 +1,4 @@
-package org.xnat.jdbc.term;
+package org.xnat.dal.term;
 
 import java.util.ArrayList;
 import java.util.List;

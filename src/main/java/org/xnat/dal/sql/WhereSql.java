@@ -1,6 +1,6 @@
-package org.xnat.jdbc.sql;
+package org.xnat.dal.sql;
 
-import org.xnat.jdbc.term.Where;
+import org.xnat.dal.term.Where;
 
 /**
  * 有条件的sql curd中: urd都有可能有条件
