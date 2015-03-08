@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.xnat.dal.sql.USql;
-import org.xnat.dal.term.Where;
-import org.xnat.entity.Person;
+import org.xnat.base.entity.Person;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
@@ -14,8 +12,10 @@ import com.google.common.base.Functions;
 
 public class PublicTest {
 	public static void main(String[] args) throws Exception {
+//		DefaultAnnotationHandlerMapping
+		
 	}
-
+	
 	@Test
 	public void testVarInParentAndSubClass() {
 		class Parent {

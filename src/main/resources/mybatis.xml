@@ -9,7 +9,7 @@
 		<mappers>
 		<!-- 
 		 -->
-		 	<mapper resource="org/xnat/dao/BaseDao.xml"/>
+		 	<mapper resource="org/xnat/base/dao/BaseDao_v2.xml"/>
 		</mappers>
 	</configuration>
 	

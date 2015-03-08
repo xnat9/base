@@ -7,8 +7,10 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.xnat.entity.Person;
-import org.xnat.util.DataUtils;
+import org.xnat.base.dao.util.Dir;
+import org.xnat.base.dao.util.Page;
+import org.xnat.base.entity.Person;
+import org.xnat.base.util.DataUtils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

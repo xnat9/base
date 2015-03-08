@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.xnat.util.DbUtil;
+import org.xnat.base.util.DbUtil;
 
 public class Test {
 	public static void main(String[] args) {

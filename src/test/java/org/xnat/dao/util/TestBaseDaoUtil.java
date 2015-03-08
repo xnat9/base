@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.junit.Test;
-import org.xnat.dao.Utils_dao;
-import org.xnat.entity.Person;
+import org.xnat.base.dao.Utils_dao;
+import org.xnat.base.entity.Person;
 
 public class TestBaseDaoUtil {
 	

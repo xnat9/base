@@ -31,7 +31,7 @@
             <!--
             <param-value>classpath:application-mvc.xml</param-value>
             -->
-            <param-value>classpath:applicationContext.xml</param-value>
+            <param-value>classpath:spring.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -43,7 +43,7 @@
     
     <listener>
     	<description>会话监听</description>
-    	<listener-class>org.xnat.listener.SessionListener</listener-class>
+    	<listener-class>org.xnat.base.listener.SessionListener</listener-class>
     </listener>
     <!-- 
     <listener>

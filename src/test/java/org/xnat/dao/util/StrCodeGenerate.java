@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import javax.persistence.Column;
 
 import org.junit.Test;
-import org.xnat.entity.Person;
-import org.xnat.util.DbUtil;
+import org.xnat.base.entity.Person;
+import org.xnat.base.util.DbUtil;
 
 /**
  * 自制定代码生成类

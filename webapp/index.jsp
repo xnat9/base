@@ -14,12 +14,9 @@ p { background-color: gray; }
 </style>
 </head>
 <body>
-<div class="news">
-	<img src="news-pic.jpg" />
-	<p>some text</p>
-</div>
-<h2>Hello World!</h2>
-<p> this is a paragraph</p>
-<a href="#">dfd</a>
+<input id="btn1" type="button" value="点击"/>
+<form action="/base/test/m4.do">
+	
+</form>
 </body>
 </html>
