@@ -36,5 +36,29 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 		
 	<import resource="spring-db.xml"/>
-
+	
+	<!-- 数据参数邦定: 时间格式转换器 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class="org.xnat.base.spring.ExtDataBinding"></bean>
+		</property>
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"></bean>
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<property name="writeAcceptCharset" value="false" />
+					<property name="supportedMediaTypes">
+ 	                    <list>
+ 	                        <value>text/plain;charset=UTF-8</value>
+ 	                        <value>*/*;charset=UTF-8</value>
+ 	                    </list>
+	                </property>
+				</bean>
+				<bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"></bean>
+				<bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter"></bean>
+				<!-- <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean> -->
+			</list>
+		</property>
+	</bean>
+	
 </beans>

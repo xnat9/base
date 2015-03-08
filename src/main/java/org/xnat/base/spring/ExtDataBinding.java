@@ -22,6 +22,7 @@ public class ExtDataBinding implements WebBindingInitializer {
 		SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		dateTimeFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+//		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateTimeFormat, true));
 		binder.registerCustomEditor(Timestamp.class, new CustomTimestampEditor(dateTimeFormat, true));
 	}
 

@@ -292,6 +292,19 @@
 			<artifactId>json</artifactId>
 			<version>20140107</version>
 		</dependency>
+		<!-- jackson包 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.5.1</version>
+		</dependency>
+		<dependency>
+    <groupId>org.codehaus.jackson</groupId>
+    <artifactId>jackson-core-asl</artifactId>
+    <version>1.7.5</version>
+    <scope>compile</scope>
+ </dependency>
+
 		<!-- <dependency> <groupId>com.fasterxml.jackson.dataformat</groupId> <artifactId>jackson-dataformat-xml</artifactId> 
 			<version>2.4.0</version> </dependency> -->
 		<!-- gson解析xml 只能解析到一个javabean对象 <dependency> <groupId>com.stanfy</groupId> 

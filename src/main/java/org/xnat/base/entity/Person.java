@@ -1,5 +1,6 @@
 package org.xnat.base.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -32,6 +33,8 @@ public class Person extends BaseEntity {
 	private String name;
 	@Column
 	private Integer status;
+	@Column
+	private Date birth;
 	
 	public Person() {}
 	public Person(Integer id, Integer age, String name, Integer status) {
