@@ -7,12 +7,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
@@ -48,12 +50,8 @@ public class TestCtrl {
 	
 	@RequestMapping(value="m4")
 	public void m4(HttpServletRequest req) {
-		try {
-			JsonObject jo = DataUtils.jsonParser.parse(new JsonReader(new InputStreamReader(req.getInputStream()))).getAsJsonObject();
-			System.out.println(jo);
-		} catch (JsonIOException | JsonSyntaxException | IOException e) {
-			e.printStackTrace();
-		}
+		JsonObject params = Utils_ctrl.getParamsToJson(req);
+		System.out.println(params.toString());
 	}
 	
 	

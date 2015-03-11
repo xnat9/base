@@ -3,6 +3,7 @@ package org.xnat.base.controller;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.xnat.base.dao.util.AutoMap;
 import org.xnat.base.util.DataUtils;
 
@@ -23,6 +25,20 @@ import com.google.gson.JsonObject;
  */
 public final class Utils_ctrl {
 	private Utils_ctrl() {}
+	
+	public static JsonObject getParamsToJson(HttpServletRequest req) {
+		JsonObject result = new JsonObject();
+		Enumeration<String> names = req.getParameterNames();
+		while (names.hasMoreElements()) {
+			String name = names.nextElement();
+			if (name.endsWith("[]")) {
+				result.addProperty(name.substring(0, name.length()-2), StringUtils.join(req.getParameterValues(name), ','));
+			}
+			else result.addProperty(name, req.getParameter(name));
+		}
+		return result;
+	}
+	
 	/**
 	 * replaced by getConditions(HttpServletRequest req, String... keys)
 	 * @param req

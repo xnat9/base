@@ -103,6 +103,37 @@ public final class DataUtils {
 	}
 	
 	/**
+	 * toJsonArray
+	 */
+	
+	/**
+	 * List<Map<String, Object>> 转换成JsonArray
+	 * @param list
+	 * @return
+	 * Oct 6, 2014 11:14:12 AM
+	 */
+	public static JsonArray toJsonArray(List<Map<String, Object>> list) {
+		return jsonParser.parse(gson.toJson(list)).getAsJsonArray();
+	}
+	/**
+	 * string to jsonArray
+	 * @param str
+	 * @return
+	 * Oct 18, 2014 4:43:22 PM
+	 */
+	public static JsonArray toJsonArray(String str) {
+		if (str == null || str.isEmpty()) return new JsonArray();
+		JsonArray ja = null;
+		try {
+			ja = jsonParser.parse(str).getAsJsonArray();
+		} catch (Exception e) {
+			ja = new JsonArray();
+		}
+		return ja;
+	}
+	
+	
+	/**
 	 * =========================================================
 	 * toMap
 	 */
@@ -217,36 +248,6 @@ public final class DataUtils {
 	public static String toXmlStr(JsonObject jo) {
 		if (jo == null) return "";
 		return XML.toString(new JSONObject(jo.toString()));
-	}
-	
-	/**
-	 * toJsonArray
-	 */
-	
-	/**
-	 * List<Map<String, Object>> 转换成JsonArray
-	 * @param list
-	 * @return
-	 * Oct 6, 2014 11:14:12 AM
-	 */
-	public static JsonArray toJsonArray(List<Map<String, Object>> list) {
-		return jsonParser.parse(gson.toJson(list)).getAsJsonArray();
-	}
-	/**
-	 * string to jsonArray
-	 * @param str
-	 * @return
-	 * Oct 18, 2014 4:43:22 PM
-	 */
-	public static JsonArray toJsonArray(String str) {
-		if (str == null || str.isEmpty()) return new JsonArray();
-		JsonArray ja = null;
-		try {
-			ja = jsonParser.parse(str).getAsJsonArray();
-		} catch (Exception e) {
-			ja = new JsonArray();
-		}
-		return ja;
 	}
 	
 	

@@ -15,9 +15,7 @@ import com.google.common.base.Functions;
 public class PublicTest {
 	public static void main(String[] args) throws Exception {
 //		DefaultAnnotationHandlerMapping
-		SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date d = dateTimeFormat.parse("2011-1-1 2:2:1");
-		System.out.println(d);
+		System.out.println("getName".indexOf("get"));
 		
 	}
 	
