@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.xnat.base.entity.Person;
 
 import com.google.common.base.Function;
@@ -16,6 +17,7 @@ public class PublicTest {
 	public static void main(String[] args) throws Exception {
 //		DefaultAnnotationHandlerMapping
 		System.out.println("getName".indexOf("get"));
+		JdbcTemplate tmp = new JdbcTemplate();
 		
 	}
 	

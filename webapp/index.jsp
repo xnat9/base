@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>base web</title>
+<base href="/base/">
 <link rel="stylesheet" href="css/index.css" type="text/css"/>
 <script type="text/javascript" src="jquery/jquery-2.1.1.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
@@ -15,8 +16,9 @@ p { background-color: gray; }
 </head>
 <body>
 <input id="btn1" type="button" value="点击"/>
-<form action="/base/test/m4.do">
-	
+<form action="test/m5" method="POST" enctype="multipart/form-data">
+	<input type="file" name="file"/>
+	<input type="submit" value="提交">
 </form>
 </body>
 </html>

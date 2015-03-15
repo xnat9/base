@@ -4,7 +4,13 @@
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
 	xmlns="http://www.springframework.org/schema/beans"
-	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd ">
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd ">
 
 	<!-- 加载外部属性文件(*.properties) -->
 	<bean
@@ -20,45 +26,70 @@
 	<context:component-scan base-package="org.xnat.base">
 		<!-- <context:exclude-filter type="regex" expression="org.xnat.base.dao..*"/> -->
 	</context:component-scan>
-
+	
+	<!-- 拦截器 -->
 	<mvc:interceptors>
-		<mvc:interceptor>
-			<!-- 必须要这么写 不然拦截不了(不存在包含关系) -->
-			<mvc:mapping path="/*.do" />
-			<mvc:mapping path="/*/*.do" />
-			<bean class="org.xnat.base.interceptor.Interceptor" />
-		</mvc:interceptor>
+		<!-- 全局拦截 -->
+		<bean class="org.xnat.base.interceptor.Interceptor" />
 	</mvc:interceptors>
-
+	<!-- <mvc:resources location="" mapping=""/> -->
 
 	<!-- 检查每次数据提交是否是有文件上传 -->
 	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
-		
-	<import resource="spring-db.xml"/>
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<!-- 指定所上传文件的总大小不能超过100M。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
+		<property name="maxUploadSize" value="104857600" />
+		<!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常--> 
+		<property name="resolveLazily" value="true"/>
+	</bean>
+
+	<!-- SpringMVC在超出上传文件限制时，会抛出org.springframework.web.multipart.MaxUploadSizeExceededException -->
+	<!-- 该异常是SpringMVC在检查上传的文件信息时抛出来的，而且此时还没有进入到Controller方法中 -->
+	<!-- <bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop
+					 key="org.springframework.web.multipart.MaxUploadSizeExceededException">test.html</prop>
+			</props>
+		</property>
+	</bean> -->
+	<!-- -->
+	<bean id="exceptionResolver"
+		class="org.xnat.base.spring.CustomSimpleMappingExceptionResolver">
+	</bean> 
+
 	
+	<import resource="spring-db.xml" />
+
 	<!-- 数据参数邦定: 时间格式转换器 -->
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="webBindingInitializer">
 			<bean class="org.xnat.base.spring.ExtDataBinding"></bean>
 		</property>
 		<property name="messageConverters">
 			<list>
-				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"></bean>
-				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<bean
+					class="org.springframework.http.converter.ByteArrayHttpMessageConverter"></bean>
+				<bean
+					class="org.springframework.http.converter.StringHttpMessageConverter">
 					<property name="writeAcceptCharset" value="false" />
 					<property name="supportedMediaTypes">
- 	                    <list>
- 	                        <value>text/plain;charset=UTF-8</value>
- 	                        <value>*/*;charset=UTF-8</value>
- 	                    </list>
-	                </property>
+						<list>
+							<value>text/plain;charset=UTF-8</value>
+							<value>*/*;charset=UTF-8</value>
+						</list>
+					</property>
 				</bean>
-				<bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"></bean>
-				<bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter"></bean>
+				<bean
+					class="org.springframework.http.converter.xml.SourceHttpMessageConverter"></bean>
+				<bean
+					class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter"></bean>
 				<!-- <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean> -->
 			</list>
 		</property>
 	</bean>
-	
+
 </beans>

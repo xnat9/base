@@ -5,9 +5,17 @@
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
+  
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.css</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.js</url-pattern>
+	</servlet-mapping>
   <!-- 
   -->
-  
   <filter>
         <filter-name>encodingFilter</filter-name>
             <filter-class>
@@ -37,7 +45,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>MVCDispatcherServlet</servlet-name>
-        <url-pattern>*.do</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     
     

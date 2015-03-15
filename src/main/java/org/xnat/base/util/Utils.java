@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.apache.commons.codec.binary.Base64;
 
 /**
@@ -127,12 +128,25 @@ public class Utils {
 	 * @param str
 	 * @return 如果出现异常，则返回-1
 	 */
-	public static int toInt(String str) {
-		try {
-			return Integer.parseInt(str);
-		} catch (NumberFormatException e) {
+	public static Integer toInt(Object value) {
+		if (value == null) return null;
+		else if (value instanceof String) {
+			return Integer.valueOf(value.toString());
+		} 
+		else if (value instanceof Integer) return (Integer) value;
+		else if (value instanceof Boolean) {
+			if ((Boolean)value) return 1;
+			else return 0;
 		}
-		return -1;
+		return null;
+	}
+	public static Boolean toBool(Object value) {
+		if (value instanceof String) return Boolean.valueOf(value.toString());
+		else if (value instanceof Integer) {
+			if ((Integer) value > 0) return true;
+			else return false;
+		}
+		return null;
 	}
 	/**
 	 * md5 加密

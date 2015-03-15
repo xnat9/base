@@ -21,10 +21,15 @@ import org.springframework.http.converter.support.AllEncompassingFormHttpMessage
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.xnat.base.dao.DynamicDataSource;
 import org.xnat.base.util.DataUtils;
@@ -47,6 +52,32 @@ public class TestCtrl {
 	private DynamicDataSource dynamicDataSource;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+//	@ExceptionHandler({Exception.class})
+//	public ModelAndView handleException(Exception ex, HttpServletResponse resp) throws IOException {
+//		if (ex instanceof MaxUploadSizeExceededException) {
+//			resp.getWriter().write("文件太大!");
+//		}
+//		return null;
+//	}
+	
+	@RequestMapping(value="m6")
+	public ModelAndView m6(int i, HttpServletResponse resp) throws IOException {
+		if (i == 1) {
+			resp.getWriter().write("字符串和modelandview并存!");
+			return null;
+		}
+		return new ModelAndView("index.jsp");
+	}
+	
+	@RequestMapping(value="m5")
+	public void m5(@RequestPart MultipartFile file) {
+		//104857600
+		System.out.println("这来==================================");
+		System.out.println("file name: "+file.getName());
+		System.out.println("file original name: "+file.getOriginalFilename());
+		System.out.println("file size: "+file.getSize());
+	}
 	
 	@RequestMapping(value="m4")
 	public void m4(HttpServletRequest req) {

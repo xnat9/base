@@ -13,6 +13,7 @@ public class Interceptor extends HandlerInterceptorAdapter {
 		response.setCharacterEncoding("utf8");
 		request.setCharacterEncoding("utf8");
 		String path = request.getServletPath();
+		System.out.println(path+"==========interceptor servletpath===========================================");
 		if ("/admin/login.do".equals(path)) return true;
 //		Object m_user = WebUtils.getSessionAttribute(request, "m_user");
 //		if (m_user == null) {
