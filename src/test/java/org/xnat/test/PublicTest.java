@@ -1,24 +1,84 @@
 package org.xnat.test;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
+
+import org.apache.commons.collections.map.LRUMap;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.xnat.base.entity.Person;
+import org.xnat.base.util.LRUCache;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 public class PublicTest {
 	public static void main(String[] args) throws Exception {
 //		DefaultAnnotationHandlerMapping
-		System.out.println("getName".indexOf("get"));
-		JdbcTemplate tmp = new JdbcTemplate();
-		
+//		System.out.println("getName".indexOf("get"));
+//		JdbcTemplate tmp = new JdbcTemplate();
+//		URL url = new URL("http://api.map.baidu.com/location/ip?ak=E4805d16520de693a3fe707cdc962045&ip=202.198.16.3&coor=bd09ll");
+//		URLConnection con = url.openConnection();
+//		BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+//		System.out.println(br.readLine());
+//		if (true) return;
+		/**
+		 * {
+	"address", "CN|吉林|长春|None|CERNET|0|0"
+    "content": {
+        "address": "吉林省长春市",
+        "address_detail": {
+            "city": "长春市",
+            "city_code": 53,
+            "district": "",
+            "province": "吉林省",
+            "street": "",
+            "street_number": ""
+        },
+        "point": {
+            "x": "125.31364243",
+            "y": "43.89833761"
+        }
+    },
+    "status": 0
+}
+		 */
+		Runtime rt = Runtime.getRuntime();
+		System.out.println("totalMem: "+rt.totalMemory()+"freeMem:"+rt.freeMemory()+", diff:"+(rt.totalMemory()-rt.freeMemory()));
+		JsonObject result = new JsonObject();
+		result.addProperty("address", "CN|吉林|长春|None|CERNET|0|0");
+		JsonObject content = new JsonObject();;
+		result.add("content", content);
+		content.addProperty("address", "吉林省长春市");
+		JsonObject address_detail = new JsonObject();
+		result.add("address_detail", address_detail);
+		address_detail.addProperty("city", "长春市");
+		address_detail.addProperty("city_code", 53);
+		address_detail.addProperty("district", "");
+		address_detail.addProperty("province", "吉林省");
+		address_detail.addProperty("street", "");
+		address_detail.addProperty("street_number", "");
+		JsonObject point = new JsonObject();
+		result.add("point", point);
+		point.addProperty("x", "125.31364243");
+		point.addProperty("y", "43.89833761");
+		result.addProperty("status", 0);
+		LRUCache lruMap = new LRUCache(1000);
+		for (int i=0; i<100000; i++) {
+			lruMap.put("a"+i, 1);
+		}
+		System.out.println("totalMem: "+rt.totalMemory()+"freeMem:"+rt.freeMemory()+", diff:"+(rt.totalMemory()-rt.freeMemory()));
 	}
 	
 	@Test

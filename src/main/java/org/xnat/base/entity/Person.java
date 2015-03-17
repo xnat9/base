@@ -16,13 +16,13 @@ import org.xnat.base.entity.dao.PersonDao;
  * @author xnat
  * Oct 21, 2014 10:45:38 AM
  */
-@Table(name=Person.tabName, catalog="dbname")
+@Table(name=Person.TABLE_NAME, catalog="dbname")
 //@Entity(tableName=Person.tabName)
 //@Table(name="person", catalog="d1") // name=表名, catalog=数据库名 use entity
 public class Person extends BaseEntity {
 	private static final long serialVersionUID = -5509060101810976486L;
 
-	public static final String tabName = "person";
+	public static final String TABLE_NAME = "person";
 	
 	@Id //方便操作与id字段有关的
 	@Column //注解column　表明此字段是一个与此实体对应的表中的字段 是为了与没有@column的注解字段区分
@@ -79,7 +79,7 @@ public class Person extends BaseEntity {
 		/**
 		 * 用于配置. 
 		 */
-		private DaoConfig conf = new DaoConfig(tabName, Field.id, FIELDS);
+		private DaoConfig conf = new DaoConfig(TABLE_NAME, Field.id, FIELDS);
 		@Override
 		public DaoConfig daoConf() { return conf; }
 		@Override

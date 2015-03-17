@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.xnat.base.dao.DynamicDataSource;
+import org.xnat.base.spring.MyJdbcTemplate;
 import org.xnat.base.util.DataUtils;
 
 import com.google.gson.Gson;
@@ -51,7 +52,7 @@ public class TestCtrl {
 	@Autowired
 	private DynamicDataSource dynamicDataSource;
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private MyJdbcTemplate jdbcTemplate;
 	
 //	@ExceptionHandler({Exception.class})
 //	public ModelAndView handleException(Exception ex, HttpServletResponse resp) throws IOException {
@@ -61,6 +62,12 @@ public class TestCtrl {
 //		return null;
 //	}
 	
+	@RequestMapping(value="m7")
+	public @ResponseBody String m7() {
+		//mysql tinyint(1) 数字会变成true或false 直接用tinyint就不会变
+		List<Map<String, Object>> list = jdbcTemplate.queryForList("select * from t2");
+		return list.toString();
+	}
 	@RequestMapping(value="m6")
 	public ModelAndView m6(int i, HttpServletResponse resp) throws IOException {
 		if (i == 1) {
